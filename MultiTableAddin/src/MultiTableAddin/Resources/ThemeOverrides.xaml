@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!--
+    默认保持 HandyControl 官方主题色，不主动覆盖。
+    只有当用户明确要求贴合企业品牌色、政务色、工业风色系等场景时，
+    才在这里取消注释并覆盖同名资源键。
+
+    示例：
+    <Color x:Key="PrimaryColor">#326CF3</Color>
+    <Color x:Key="DarkPrimaryColor">#1D4ED8</Color>
+    <Color x:Key="WarningColor">#F79009</Color>
+    <Color x:Key="DangerColor">#F04438</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+  -->
+
+  <!-- HandyControl 3.5.1 默认资源中未提供 SettingGeometry，项目自行定义以避免 XamlParseException -->
+  <Geometry x:Key="SettingGeometry">M12,15.5A3.5,3.5,0,0,1,8.5,12,3.5,3.5,0,0,1,12,8.5a3.5,3.5,0,0,1,3.5,3.5A3.5,3.5,0,0,1,12,15.5M19.43,12.97C19.47,12.65,19.5,12.33,19.5,12C19.5,11.67,19.47,11.34,19.43,11L21.54,9.37C21.73,9.22,21.78,8.95,21.66,8.73L19.66,5.27C19.54,5.05,19.27,4.97,19.05,5.05L16.56,6.05C16.04,5.65,15.48,5.32,14.87,5.07L14.49,2.42C14.45,2.18,14.24,2,13.99,2H9.99C9.74,2,9.53,2.18,9.49,2.42L9.11,5.07C8.5,5.32,7.94,5.66,7.42,6.05L4.93,5.05C4.7,4.96,4.44,5.05,4.32,5.27L2.32,8.73C2.19,8.95,2.25,9.22,2.44,9.37L4.55,11C4.51,11.34,4.48,11.67,4.48,12C4.48,12.33,4.51,12.66,4.55,12.97L2.44,14.6C2.25,14.75,2.2,15.02,2.32,15.24L4.32,18.7C4.44,18.92,4.71,19,4.93,18.92L7.42,17.91C7.94,18.31,8.5,18.64,9.11,18.89L9.49,21.54C9.53,21.78,9.74,21.96,9.99,21.96H13.99C14.24,21.96,14.45,21.78,14.49,21.54L14.87,18.89C15.48,18.64,16.04,18.31,16.56,17.91L19.05,18.92C19.27,19,19.54,18.92,19.66,18.7L21.66,15.24C21.78,15.02,21.73,14.75,21.54,14.6L19.43,12.97z</Geometry>
+</ResourceDictionary>

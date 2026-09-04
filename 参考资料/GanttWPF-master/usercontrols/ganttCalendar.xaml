@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="SCADAServis.Controls.ganttCalendar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             
+             d:DesignWidth="300" d:DesignHeight="300">
+    <Grid>
+        <Border BorderBrush="Silver" BorderThickness="1"  Background="White">
+        	<Border.Effect>
+        		<DropShadowEffect ShadowDepth="0" BlurRadius="31" Opacity="0.395"/>
+        	</Border.Effect>
+		</Border>
+			<Grid >
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Border Background="Black">
+					<Grid>
+				<TextBlock Foreground="White" Margin="5,3" FontSize="15">Den</TextBlock>
+				<Button x:Name="bClose" Width="60" HorizontalAlignment="Right" Margin="3" Click="bClose_Click">Zavřít</Button>
+				</Grid>
+				
+				</Border>
+			<Border BorderBrush="Silver" Margin="5,0,5,5" BorderThickness="0"  Grid.Row="1" Background="White" >
+      
+                <Calendar x:Name="calendar" BorderThickness="0" SelectedDatesChanged="calendar_SelectedDatesChanged"  HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                <!--<my:Calendar x:Name="calendar" BorderThickness="0" SelectedDatesChanged="calendar_SelectedDatesChanged"></my:Calendar>-->
+			</Border>
+			</Grid>
+        
+    </Grid>
+</UserControl>

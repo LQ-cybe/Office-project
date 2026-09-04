@@ -1,0 +1,31 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:GanttWPF="clr-namespace:GanttWPF" x:Class="SCADAServis.Controls.ganttTimeHeader" 
+    MinWidth="400" MouseWheel="UserControl_MouseWheel" Cursor="Hand" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="#FF606060"  BorderThickness="2,0,2,2" Padding="0,0,0,0" Height="10">
+            <Canvas Height="20" x:Name="timeLine"/>
+        </Border>
+		<Grid>
+    	<Grid Grid.Row="1">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="*"/>
+    			<ColumnDefinition Width="Auto"/>
+    			<ColumnDefinition Width="Auto"/>
+    		</Grid.ColumnDefinitions>
+    		<TextBlock x:Name="lStart" Grid.Column="1" Text="15:15:16" Margin="5,10,0,0"/>
+    		<TextBlock x:Name="lEnd" Grid.Column="3" Text="16:16:17" Margin="0,10,7,0"/>
+       	</Grid>
+			<GanttWPF:timePointerMiniUC Margin="50,35,0,0" x:Name="timePointerMini" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+		</Grid>
+        
+    </Grid>
+</UserControl>

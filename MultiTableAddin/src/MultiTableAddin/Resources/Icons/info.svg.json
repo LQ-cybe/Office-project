@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "requestCount": 1,
+  "foundCount": 1,
+  "missingCount": 0,
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:info-circle",
+      "library": "tabler-icons",
+      "sourceId": "02812",
+      "category": "System",
+      "categoryCN": "系统",
+      "categoryDisplay": "线性 · 系统 (System)",
+      "name": "info-circle",
+      "title": "Info Circle",
+      "svgFileName": "info-circle.svg",
+      "svg": "<!--\ntags: [information, advice, news, tip, sign, info, circle, control, operation, round]\ncategory: System\nversion: \"1.0\"\nunicode: \"eac5\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\" />\n  <path d=\"M12 9h.01\" />\n  <path d=\"M11 12h1v4h1\" />\n</svg>\n",
+      "originalSvg": "<!--\ntags: [information, advice, news, tip, sign, info, circle, control, operation, round]\ncategory: System\nversion: \"1.0\"\nunicode: \"eac5\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\" />\n  <path d=\"M12 9h.01\" />\n  <path d=\"M11 12h1v4h1\" />\n</svg>\n",
+      "styleApplied": false,
+      "resolvedCatalog": "tabler-icons",
+      "resolvedStylePreset": null
+    }
+  ],
+  "missing": [],
+  "stylePreset": null,
+  "note": "svg 字段返回原始 SVG。若传入 -StylePreset，则 svg 字段返回应用样式后的 SVG。"
+}

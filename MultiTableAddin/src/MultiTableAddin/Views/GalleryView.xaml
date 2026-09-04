@@ -1,0 +1,59 @@
+<UserControl x:Class="MultiTableAddin.Views.GalleryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             Background="{DynamicResource BackgroundBrush}">
+    <UserControl.Resources>
+        <Style x:Key="GalleryCard" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.12" Color="#000000" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- 顶部工具栏：标题/图片/显隐/排序 -->
+        <Border DockPanel.Dock="Top" Padding="12,8" Background="{DynamicResource RegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="标题" VerticalAlignment="Center" Margin="0,0,6,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" />
+                <ComboBox x:Name="TitleFieldCombo" Width="110" VerticalContentAlignment="Center"
+                          SelectionChanged="OnTitleFieldChanged" />
+
+                <TextBlock Text="图片" VerticalAlignment="Center" Margin="12,0,6,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" />
+                <ComboBox x:Name="ImageFieldCombo" Width="110" VerticalContentAlignment="Center"
+                          SelectionChanged="OnImageFieldChanged" />
+
+                <Button x:Name="BtnFieldVisibility" Content="字段显隐" Margin="12,0,0,0"
+                        Style="{StaticResource ButtonDefault}" Click="OnFieldVisibilityClick" />
+
+                <TextBlock Text="排序" VerticalAlignment="Center" Margin="12,0,6,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" />
+                <ComboBox x:Name="SortFieldCombo" Width="110" VerticalContentAlignment="Center" />
+                <ComboBox x:Name="SortOrderCombo" Width="72" Margin="6,0,0,0"
+                          VerticalContentAlignment="Center" />
+                <Button x:Name="BtnApplySort" Content="应用" Margin="6,0,0,0"
+                        Style="{StaticResource ButtonPrimary}" Click="OnApplySortClick" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="GalleryItems" Padding="16">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

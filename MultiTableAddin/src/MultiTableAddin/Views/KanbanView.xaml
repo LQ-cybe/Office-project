@@ -1,0 +1,57 @@
+<UserControl x:Class="MultiTableAddin.Views.KanbanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             Background="{DynamicResource BackgroundBrush}">
+    <UserControl.Resources>
+        <Style x:Key="KanbanCard" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.15" Color="#000000" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="KanbanColumn" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="MinWidth" Value="260" />
+            <Setter Property="AllowDrop" Value="True" />
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- 顶部工具栏：分组、显隐、排序 -->
+        <Border DockPanel.Dock="Top" Padding="12,8" Background="{DynamicResource RegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="分组" VerticalAlignment="Center" Margin="0,0,6,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" />
+                <ComboBox x:Name="GroupByCombo" Width="120" VerticalContentAlignment="Center"
+                          SelectionChanged="OnGroupByChanged" />
+
+                <Button x:Name="BtnFieldVisibility" Content="字段显隐" Margin="12,0,0,0"
+                        Style="{StaticResource ButtonDefault}" Click="OnFieldVisibilityClick" />
+
+                <TextBlock Text="排序" VerticalAlignment="Center" Margin="12,0,6,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" />
+                <ComboBox x:Name="SortFieldCombo" Width="120" VerticalContentAlignment="Center" />
+                <ComboBox x:Name="SortOrderCombo" Width="72" Margin="6,0,0,0"
+                          VerticalContentAlignment="Center" />
+                <Button x:Name="BtnApplySort" Content="应用" Margin="6,0,0,0"
+                        Style="{StaticResource ButtonPrimary}" Click="OnApplySortClick" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                      Padding="12">
+            <StackPanel x:Name="ColumnsPanel" Orientation="Horizontal" />
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

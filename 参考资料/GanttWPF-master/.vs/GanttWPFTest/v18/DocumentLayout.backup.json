@@ -1,0 +1,100 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|TestAPP||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{11AEEA68-DED2-4594-BC7E-E743E8A247D2}|GanttWPF.csproj|D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\usercontrols\\ganttcontrol.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{11AEEA68-DED2-4594-BC7E-E743E8A247D2}|GanttWPF.csproj|solutionrelative:usercontrols\\ganttcontrol.csproj.user||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\testapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|solutionrelative:testapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\testapp\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|solutionrelative:testapp\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\testapp\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|solutionrelative:testapp\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{366CEF61-CA7C-49D9-B7D2-243C0F603F64}|TestAPP\\TestAPP.csproj|d:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\ganttwpf-master\\testapp\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ganttControl.csproj.user",
+              "DocumentMoniker": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\usercontrols\\ganttControl.csproj.user",
+              "RelativeDocumentMoniker": "usercontrols\\ganttControl.csproj.user",
+              "ToolTip": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\usercontrols\\ganttControl.csproj.user",
+              "RelativeToolTip": "usercontrols\\ganttControl.csproj.user",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003464|",
+              "WhenOpened": "2026-08-13T11:18:04.546Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TestAPP\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TestAPP\\MainWindow.xaml.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAIwBQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T11:17:56.035Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "TestAPP\\MainWindow.xaml",
+              "ToolTip": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\MainWindow.xaml",
+              "RelativeToolTip": "TestAPP\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-08-13T11:17:44.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.xaml",
+              "DocumentMoniker": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\App.xaml",
+              "RelativeDocumentMoniker": "TestAPP\\App.xaml",
+              "ToolTip": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\App.xaml",
+              "RelativeToolTip": "TestAPP\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-08-13T11:17:41.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TestAPP",
+              "DocumentMoniker": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\TestAPP.csproj",
+              "RelativeDocumentMoniker": "TestAPP\\TestAPP.csproj",
+              "ToolTip": "D:\\\u7F16\u7A0B\u5F00\u53D1\\\u5F00\u6E90\u9879\u76EE\\\u591A\u7EF4\u8868\u5206\u6790\u8F6F\u4EF6\\GanttWPF-master\\TestAPP\\TestAPP.csproj",
+              "RelativeToolTip": "TestAPP\\TestAPP.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-08-13T11:17:37.93Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

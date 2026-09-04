@@ -1,0 +1,1850 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>图标搜索结果</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px 18px 28px;
+    }
+    .hero,
+    .style-panel,
+    .preset-popover {
+      background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+      border: 1px solid #d9e3f5;
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+      margin-bottom: 16px;
+    }
+    .hero {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+    .hero-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-main p,
+    .panel-tip {
+      margin: 0;
+      color: #475569;
+      line-height: 1.5;
+      font-size: 12px;
+    }
+    .hero-tip code,
+    .guide-section code {
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 1px 8px;
+      border-radius: 999px;
+    }
+    .hero-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .hero-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .palette-panel {
+      display: none;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+      border: 1px solid #d9e3f5;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .palette-panel.show {
+      display: block;
+    }
+    .palette-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .palette-title {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.2;
+      color: #334155;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .palette-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .palette-button {
+      min-width: 0;
+      max-width: 220px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid #dbe7f8;
+      background: #ffffff;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    }
+    .palette-button:hover,
+    .palette-button.active {
+      border-color: #60a5fa;
+      background: #eff6ff;
+      color: #1d4ed8;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.10);
+    }
+    .palette-swatches {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+    }
+    .palette-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    }
+    .palette-label {
+      min-width: 0;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .palette-reset {
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .palette-reset:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .toolbar-button,
+    .toolbar-ghost,
+    .choice-button,
+    .action-button {
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      padding: 0 12px;
+    }
+    .toolbar-button.active,
+    .toolbar-button:hover,
+    .toolbar-ghost:hover {
+      border-color: #14b8a6;
+      background: #ecfeff;
+      color: #0f766e;
+      box-shadow: 0 8px 16px rgba(20, 184, 166, 0.08);
+    }
+    .style-panel {
+      padding: 10px 12px;
+      display: none;
+    }
+    .style-panel.show {
+      display: block;
+    }
+    .style-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .style-panel-title {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .style-grid {
+      display: block;
+    }
+    .style-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-row {
+      display: grid;
+      gap: 8px;
+    }
+    .control-row.metrics {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .control-row.choices {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    .control-row.colors {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .control-card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid #dbe7f8;
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+    .control-card.advanced {
+      background: rgba(248, 250, 252, 0.9);
+      border-color: #e2e8f0;
+    }
+    .control-card.advanced .control-label {
+      color: #475569;
+    }
+    .control-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .control-label {
+      margin: 0 0 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .control-badge {
+      flex: 0 0 auto;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #6366f1;
+      font-size: 10px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+    .control-sub {
+      display: none;
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #64748b;
+    }
+    .range-row,
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .range-row input[type="range"] {
+      flex: 1 1 auto;
+      accent-color: #0f766e;
+    }
+    .range-row input[type="number"],
+    .color-row input[type="text"] {
+      width: 62px;
+      height: 32px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 8px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12px;
+    }
+    .color-row input[type="color"] {
+      width: 34px;
+      height: 32px;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .choice-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .choice-row.compact {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .choice-button.active,
+    .choice-button:hover,
+    .action-button:hover {
+      border-color: #14b8a6;
+      background: #ecfeff;
+      color: #0f766e;
+      box-shadow: 0 8px 16px rgba(20, 184, 166, 0.08);
+    }
+    .guide-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.28);
+      z-index: 10000;
+      display: none;
+      backdrop-filter: blur(2px);
+    }
+    .guide-backdrop.show {
+      display: block;
+    }
+    .guide-panel {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(760px, calc(100vw - 32px));
+      max-height: calc(100vh - 48px);
+      margin-bottom: 0;
+      padding: 18px 20px;
+      z-index: 10001;
+      display: none;
+      overflow: auto;
+      background: #ffffff;
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+      overscroll-behavior: contain;
+    }
+    .guide-panel.show {
+      display: block;
+    }
+    .guide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .guide-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      color: #0f172a;
+    }
+    .guide-close {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #475569;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .guide-close:hover {
+      border-color: #14b8a6;
+      color: #0f766e;
+    }
+    .guide-section {
+      margin-top: 12px;
+    }
+    .guide-section:first-child {
+      margin-top: 0;
+    }
+    .guide-section h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #0f172a;
+    }
+    .guide-text,
+    .guide-list,
+    .guide-table {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #475569;
+    }
+    .guide-list {
+      padding-left: 16px;
+    }
+    .guide-list li {
+      margin: 4px 0;
+    }
+    .guide-table {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 8px 10px;
+    }
+    .guide-key {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .guide-note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 282px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .card:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px);
+    }
+    .card.selected {
+      border-color: #60a5fa;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+    }
+    .card-head {
+      min-height: 34px;
+    }
+    .library-band {
+      width: 100%;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid #cde7e6;
+      background: linear-gradient(135deg, #f4fffe 0%, #e8fbff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .library-name {
+      min-width: 0;
+      flex: 0 1 auto;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #0f766e;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .icon-box {
+      height: 144px;
+      border-radius: 14px;
+      border: 1px dashed #cbd5e1;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      cursor: zoom-in;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      overflow: hidden;
+    }
+    .icon-box:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      border-color: #93c5fd;
+    }
+    .icon-svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    .icon-svg svg {
+      max-width: 100%;
+      max-height: 100%;
+      overflow: visible;
+    }
+    .key-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .key-value {
+      font-size: 12px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      word-break: break-all;
+      font-family: Consolas, "Courier New", monospace;
+      cursor: pointer;
+      border: none;
+      text-align: left;
+      width: 100%;
+      min-height: 50px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .key-value:hover {
+      background: #dbeafe;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.10);
+      transform: translateY(-1px);
+    }
+    .card.selected .key-value {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .key-value:focus {
+      outline: 2px solid #93c5fd;
+      outline-offset: 2px;
+    }
+    .title-row {
+      display: grid;
+      grid-template-rows: 24px 18px;
+      gap: 4px;
+      min-height: 46px;
+    }
+    .main-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sub-name {
+      font-size: 11px;
+      color: #334155;
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta-row {
+      display: flex;
+      gap: 6px;
+      min-height: 28px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .meta-chip {
+      font-size: 11px;
+      line-height: 1.4;
+      color: #475569;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 4px 8px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta-chip.variant {
+      color: #6d28d9;
+      background: #f5f3ff;
+      border-color: #ddd6fe;
+    }
+    .meta-chip.brand-color {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fed7aa;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      flex: 0 0 auto;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      min-width: 180px;
+      max-width: 320px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.92);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hover-preview {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 420px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      box-shadow: 0 22px 44px rgba(15, 23, 42, 0.22);
+      opacity: 0;
+      transform: scale(0.96);
+      transform-origin: top left;
+      pointer-events: none;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      z-index: 10001;
+    }
+    .hover-preview.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .hover-preview-box {
+      height: 248px;
+      border-radius: 14px;
+      border: 1px solid #dbe4f0;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      overflow: hidden;
+    }
+    .hover-preview-box svg {
+      width: 220px;
+      height: 220px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .hover-preview-title {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: normal;
+      word-break: break-word;
+      text-align: left;
+    }
+    @media (max-width: 1180px) {
+      .control-row.metrics,
+      .control-row.colors {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .control-row.choices {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 860px) {
+      .control-row.metrics,
+      .control-row.colors,
+      .choice-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .choice-row.compact {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .guide-panel {
+        width: calc(100vw - 24px);
+        top: 12px;
+        max-height: calc(100vh - 24px);
+        padding: 16px;
+      }
+      .hover-preview {
+        width: min(420px, calc(100vw - 24px));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <h1>图标候选结果</h1>
+        <p>关键词：<span id="queryText"></span></p>
+        <p class="hero-tip">第一轮优先搜主力库：通用图标先用 <code>tabler-icons,heroicons</code>，品牌用 <code>simple-icons</code>，技术栈用 <code>devicon</code>；确认候选后再点卡片复制完整参数 JSON</p>
+      </div>
+      <div class="hero-actions">
+        <button id="toggleConfigButton" type="button" class="toolbar-button" title="显示或隐藏参数调整">显示配置</button>
+        <button id="showGuideButton" type="button" class="toolbar-ghost" title="查看参数说明、风格生效范围与最佳实践">参数说明</button>
+        <div class="hero-count">共 <span id="resultCount"></span> 个</div>
+      </div>
+    </section>
+
+    <section class="palette-panel">
+      <div class="palette-bar">
+        <h2 class="palette-title" title="点击下方任意风格按钮即可试色；详细说明已放入悬停提示。">推荐配色</h2>
+        <div id="paletteList" class="palette-list"></div>
+        <button id="resetPaletteButton" type="button" class="palette-reset" title="重置为当前搜索页默认配色参数">重置</button>
+      </div>
+    </section>
+
+    <section class="style-panel">
+      <div class="style-panel-head">
+        <div>
+          <h2 class="style-panel-title">参数调整</h2>
+          <p class="panel-tip" title="Google 的 weight / grade / optical size 会统一映射到 SVG 描边算法；IconPark 的线性、填充、双色、多色也尽量复用这套规则。">悬停查看说明</p>
+        </div>
+      </div>
+      <div class="style-grid">
+        <div class="style-controls">
+          <div class="control-row metrics">
+            <div class="control-card" title="调整预览图标显示尺寸">
+              <div class="control-label">图标大小</div>
+              <div class="range-row">
+                <input id="sizeRange" type="range" min="16" max="256" step="1" />
+                <input id="sizeNumber" type="number" min="16" max="256" step="1" />
+              </div>
+            </div>
+            <div class="control-card" title="直接调整基础描边粗细，优先使用这一项">
+              <div class="control-label">线条粗细</div>
+              <div class="range-row">
+                <input id="strokeWidthRange" type="range" min="1" max="8" step="0.1" />
+                <input id="strokeWidthNumber" type="number" min="1" max="8" step="0.1" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。与线条粗细有部分重叠，主要用于整体粗细风格偏移">
+              <div class="control-label-row">
+                <div class="control-label">Weight</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="weightRange" type="range" min="100" max="700" step="50" />
+                <input id="weightNumber" type="number" min="100" max="700" step="50" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。影响比 Weight 更细，适合轻微强调或减弱">
+              <div class="control-label-row">
+                <div class="control-label">Grade</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="gradeRange" type="range" min="-25" max="200" step="25" />
+                <input id="gradeNumber" type="number" min="-25" max="200" step="25" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。按图标尺寸做视觉粗细补偿，通常保持默认即可">
+              <div class="control-label-row">
+                <div class="control-label">Optical Size</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="opticalSizeRange" type="range" min="20" max="48" step="4" />
+                <input id="opticalSizeNumber" type="number" min="20" max="48" step="4" />
+              </div>
+            </div>
+          </div>
+          <div class="control-row choices">
+            <div class="control-card" title="切换原图、线性、填充、双色、多色">
+              <div class="control-label">图标风格</div>
+              <div class="choice-row" id="themeButtons">
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="original">原图</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="outline">线性</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="filled">填充</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="two-tone">双色</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="multi-color">多色</button>
+              </div>
+            </div>
+            <div class="control-card" title="设置线条端点样式">
+              <div class="control-label">端点类型</div>
+              <div class="choice-row compact" id="linecapButtons">
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="butt">平</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="round">圆</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="square">方</button>
+              </div>
+            </div>
+            <div class="control-card" title="设置转角样式">
+              <div class="control-label">拐角类型</div>
+              <div class="choice-row compact" id="linejoinButtons">
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="miter">尖角</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="round">圆角</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="bevel">切角</button>
+              </div>
+            </div>
+          </div>
+          <div class="control-row colors">
+            <div class="control-card" title="主描边或主填充颜色">
+              <div class="control-label">主色</div>
+              <div class="color-row">
+                <input id="colorPicker" type="color" />
+                <input id="colorText" type="text" placeholder="#333333" />
+              </div>
+            </div>
+            <div class="control-card" title="双色或多色模式的副色">
+              <div class="control-label">副色</div>
+              <div class="color-row">
+                <input id="secondaryColorPicker" type="color" />
+                <input id="secondaryColorText" type="text" placeholder="#2F88FF" />
+              </div>
+            </div>
+            <div class="control-card" title="多色模式的第三色">
+              <div class="control-label">第三色</div>
+              <div class="color-row">
+                <input id="tertiaryColorPicker" type="color" />
+                <input id="tertiaryColorText" type="text" placeholder="#FFFFFF" />
+              </div>
+            </div>
+            <div class="control-card" title="多色模式的第四色">
+              <div class="control-label">第四色</div>
+              <div class="color-row">
+                <input id="quaternaryColorPicker" type="color" />
+                <input id="quaternaryColorText" type="text" placeholder="#43CCF8" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="guideBackdrop" class="guide-backdrop"></div>
+    <div id="guidePanel" class="guide-panel">
+      <div class="guide-head">
+        <h2 class="guide-title">参数说明</h2>
+        <button id="closeGuideButton" type="button" class="guide-close" title="关闭说明面板">×</button>
+      </div>
+      <div class="guide-section">
+        <p class="guide-text">推荐顺序：先用 <code>1 到 2</code> 个主力库搜候选，再选 <code>图标风格</code>，然后调 <code>线条粗细</code> 和颜色，最后按需微调 <code>Weight / Grade / Optical Size</code>。</p>
+      </div>
+      <div class="guide-section">
+        <h3>参数最佳实践</h3>
+        <ul class="guide-list">
+          <li><span class="guide-key">图标大小</span>：影响预览尺寸，也会作为默认导出尺寸带进复制 JSON。</li>
+          <li><span class="guide-key">线条粗细</span>：主控制项，绝大多数场景优先调这一项。</li>
+          <li><span class="guide-key">Weight / Grade / Optical Size</span>：高级微调，和线条粗细有部分重叠，变化不明显时保持默认即可。</li>
+          <li><span class="guide-key">颜色</span>：先调主色；只有双色、多色时再继续调副色、第三色、第四色。</li>
+        </ul>
+      </div>
+      <div class="guide-section">
+        <h3>各风格下哪些参数会生效</h3>
+        <div class="guide-table">
+          <div class="guide-key">原图</div><div>尽量保留原始结构。主色只会替换原图已有的填充或描边；副色、第三色、第四色通常不生效。端点、拐角、线条粗细只对原图本身带描边的图标明显。</div>
+          <div class="guide-key">线性</div><div>主色、线条粗细、端点、拐角最明显；副色、第三色、第四色不生效。</div>
+          <div class="guide-key">填充</div><div>主色最明显；副色、第三色、第四色不生效。端点、拐角通常不明显，线条粗细只对少数仍带描边的元素有效。</div>
+          <div class="guide-key">双色</div><div>主色主要用于描边，副色主要用于填充；第三色、第四色不生效。端点、拐角只对带描边元素明显。</div>
+          <div class="guide-key">多色</div><div>主色通常用于描边，副色、第三色、第四色会轮换填充；端点、拐角只对带描边元素明显。</div>
+        </div>
+      </div>
+      <div class="guide-section">
+        <h3>为什么有些参数看起来没反应</h3>
+        <ul class="guide-list">
+          <li>很多图库的图标本质是纯填充形状，没有描边，这时端点、拐角、线条粗细变化会很弱，甚至看不出来。</li>
+          <li>非 IconPark 图库的填充、双色、多色属于通用近似算法，不一定和原图库官方主题系统完全一致。</li>
+          <li>如果怎么调都不明显，优先换成 <code>线性</code> 风格再试，通常更容易观察到变化。</li>
+        </ul>
+      </div>
+      <div class="guide-note">默认先搜主力库：通用功能图标优先 <code>tabler-icons,heroicons</code>，品牌优先 <code>simple-icons</code>，技术栈优先 <code>devicon</code>；<code>fluentui-system-icons</code>、<code>material-design-icons</code>、<code>remixicon</code> 更适合第二轮按场景扩展。上方“推荐配色”会按当前关键词给出 `2 到 3` 组试色方案，建议先点一下看整体风格，再决定是否细调。点击任意图标卡片后，会自动选中当前图片，并把图标名和全部样式参数一起复制成 JSON，可直接发给 AI，也可传给 <code>get_icon_svg.ps1 -StylePreset</code> 或 <code>export_icon_asset.ps1 -StylePreset</code> 使用。其中 <code>get_icon_svg.ps1 -StylePreset</code> 会返回应用样式后的 SVG，并额外保留原始 SVG 供回溯。</div>
+    </div>
+
+    <ol class="list" id="iconList"></ol>
+  </main>
+  <script>
+    window.__ICON_DATA__ = {
+  "queryText": "refresh,reload",
+  "resultCount": 5,
+  "styleDefaults": {
+    "theme": "original",
+    "size": 48,
+    "color": "#333333",
+    "secondaryColor": "#2F88FF",
+    "tertiaryColor": "#FFFFFF",
+    "quaternaryColor": "#43CCF8",
+    "strokeWidth": 4,
+    "strokeLinecap": "round",
+    "strokeLinejoin": "round",
+    "weight": 400,
+    "grade": 0,
+    "opticalSize": 24,
+    "background": "transparent"
+  },
+  "colorSuggestions": [
+    {
+      "id": "enterprise",
+      "title": "稳重企业风",
+      "summary": "默认图标先用蓝灰，强调图标再上科技蓝，适合后台、SaaS、控制台。",
+      "theme": "outline",
+      "color": "#475569",
+      "secondaryColor": "#2563EB",
+      "tertiaryColor": "#FFFFFF",
+      "quaternaryColor": "#DBEAFE",
+      "background": "transparent"
+    },
+    {
+      "id": "tech",
+      "title": "科技蓝紫风",
+      "summary": "偏冷、偏科技、偏数字感，适合 AI 工具、开发者产品、创新型页面。",
+      "theme": "two-tone",
+      "color": "#334155",
+      "secondaryColor": "#4F46E5",
+      "tertiaryColor": "#06B6D4",
+      "quaternaryColor": "#E0E7FF",
+      "background": "transparent"
+    },
+    {
+      "id": "calm",
+      "title": "清爽冷静风",
+      "summary": "适合通用功能图标和图表辅助图标，颜色克制，便于长期使用。",
+      "theme": "outline",
+      "color": "#334155",
+      "secondaryColor": "#0891B2",
+      "tertiaryColor": "#E0F2FE",
+      "quaternaryColor": "#FFFFFF",
+      "background": "transparent"
+    },
+    {
+      "id": "minimal",
+      "title": "极简黑白风",
+      "summary": "适合极简页面、白底界面和更克制的功能图标，优先用单色。",
+      "theme": "outline",
+      "color": "#0F172A",
+      "secondaryColor": "#64748B",
+      "tertiaryColor": "#F8FAFC",
+      "quaternaryColor": "#E2E8F0",
+      "background": "transparent"
+    },
+    {
+      "id": "fresh",
+      "title": "清新青绿风",
+      "summary": "适合轻产品、工具页、健康类和偏清爽的页面气质。",
+      "theme": "two-tone",
+      "color": "#334155",
+      "secondaryColor": "#14B8A6",
+      "tertiaryColor": "#DCFCE7",
+      "quaternaryColor": "#CCFBF1",
+      "background": "transparent"
+    },
+    {
+      "id": "warm",
+      "title": "暖色亲和风",
+      "summary": "更亲和、更内容化，适合运营位、落地页、生活方式和暖色参考图。",
+      "theme": "filled",
+      "color": "#EA580C",
+      "secondaryColor": "#FB7185",
+      "tertiaryColor": "#FFF7ED",
+      "quaternaryColor": "#FED7AA",
+      "background": "transparent"
+    },
+    {
+      "id": "brand",
+      "title": "品牌强调风",
+      "summary": "适合首页重点入口、品牌主视觉和需要更强识别度的按钮图标。",
+      "theme": "two-tone",
+      "color": "#1F2937",
+      "secondaryColor": "#2563EB",
+      "tertiaryColor": "#DBEAFE",
+      "quaternaryColor": "#FFFFFF",
+      "background": "transparent"
+    },
+    {
+      "id": "premium",
+      "title": "高级深金风",
+      "summary": "适合会员、高级版、金融感和偏质感的深色或中性页面。",
+      "theme": "filled",
+      "color": "#3F3F46",
+      "secondaryColor": "#D4A017",
+      "tertiaryColor": "#F5F5F4",
+      "quaternaryColor": "#E7E5E4",
+      "background": "transparent"
+    }
+  ],
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:refresh",
+      "title": "Refresh",
+      "titleCN": "刷新",
+      "name": "refresh",
+      "mainTitle": "刷新",
+      "subTitle": "Refresh",
+      "category": "线性 · Arrows (Arrows)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "04033",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [synchronization, reload, restart, spinner, loader, ajax, update, arrows, refresh, navigation]\ncategory: Arrows\nversion: \"1.0\"\nunicode: \"eb13\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" />\n  <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:reload",
+      "title": "Reload",
+      "titleCN": "Reload",
+      "name": "reload",
+      "mainTitle": "Reload",
+      "subTitle": "tabler-icons:outline:reload",
+      "category": "线性 · Arrows (Arrows)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "04040",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [refresh, repeat, update, sync, loading, reload, navigation, flow, movement, route]\ncategory: Arrows\nversion: \"1.93\"\nunicode: \"f3ae\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747\" />\n  <path d=\"M20 4v5h-5\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:refresh-alert",
+      "title": "Refresh Alert",
+      "titleCN": "刷新警告",
+      "name": "refresh-alert",
+      "mainTitle": "刷新警告",
+      "subTitle": "Refresh Alert",
+      "category": "线性 · Arrows (Arrows)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "04030",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [synchronization, reload, restart, spinner, loader, ajax, update, arrows, refresh, alert]\ncategory: Arrows\nversion: \"1.0\"\nunicode: \"ed57\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" />\n  <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />\n  <path d=\"M12 9l0 3\" />\n  <path d=\"M12 15l.01 0\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:refresh-dot",
+      "title": "Refresh DOT",
+      "titleCN": "刷新Dot",
+      "name": "refresh-dot",
+      "mainTitle": "刷新Dot",
+      "subTitle": "Refresh DOT",
+      "category": "线性 · Arrows (Arrows)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "04031",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [again, reload, arrows, loading, replay, refresh, dot, navigation, flow, movement]\ncategory: Arrows\nversion: \"1.49\"\nunicode: \"efbf\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4\" />\n  <path d=\"M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4\" />\n  <path d=\"M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:refresh-off",
+      "title": "Refresh OFF",
+      "titleCN": "刷新Off",
+      "name": "refresh-off",
+      "mainTitle": "刷新Off",
+      "subTitle": "Refresh OFF",
+      "category": "线性 · Arrows (Arrows)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "04032",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [synchronization, reload, restart, spinner, loader, ajax, update, arrows, refresh, off]\ncategory: Arrows\nversion: \"1.66\"\nunicode: \"f18d\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M20 11a8.1 8.1 0 0 0 -11.271 -6.305m-2.41 1.624a8.083 8.083 0 0 0 -1.819 2.681m-.5 -4v4h4\" />\n  <path d=\"M4 13a8.1 8.1 0 0 0 13.671 4.691m2.329 -1.691v-1h-1\" />\n  <path d=\"M3 3l18 18\" />\n</svg>\n",
+      "score": 118.0
+    }
+  ]
+};
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    (function main() {
+      var data = window.__ICON_DATA__ || { items: [], styleDefaults: {} };
+      var items = Array.isArray(data.items) ? data.items : [];
+      var colorSuggestions = Array.isArray(data.colorSuggestions) ? data.colorSuggestions : [];
+      var defaultStyleState = Object.assign({
+        theme: "original",
+        size: 48,
+        color: "#333333",
+        secondaryColor: "#2F88FF",
+        tertiaryColor: "#FFFFFF",
+        quaternaryColor: "#43CCF8",
+        strokeWidth: 4,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        weight: 400,
+        grade: 0,
+        opticalSize: 24,
+        background: "transparent"
+      }, data.styleDefaults || {});
+      var styleState = Object.assign({}, defaultStyleState);
+      var selectedItemIndex = -1;
+      var activeColorSuggestionIndex = -1;
+      var stylePanel = document.querySelector(".style-panel");
+      var palettePanel = document.querySelector(".palette-panel");
+      var paletteList = document.getElementById("paletteList");
+      var resetPaletteButton = document.getElementById("resetPaletteButton");
+      var toggleConfigButton = document.getElementById("toggleConfigButton");
+      var guideBackdrop = document.getElementById("guideBackdrop");
+      var guidePanel = document.getElementById("guidePanel");
+      var showGuideButton = document.getElementById("showGuideButton");
+      var closeGuideButton = document.getElementById("closeGuideButton");
+      var hideHoverPreview = function() {};
+      var toastTimer = 0;
+      var toast = document.createElement("div");
+      toast.className = "toast";
+      document.body.appendChild(toast);
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(function() {
+          toast.classList.remove("show");
+        }, 1600);
+      }
+
+      function fallbackCopy(text) {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "readonly");
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        var ok = false;
+        try {
+          ok = document.execCommand("copy");
+        } finally {
+          document.body.removeChild(textarea);
+        }
+        return ok;
+      }
+
+      function copyText(text, successMessage) {
+        var safeText = String(text == null ? "" : text);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(safeText).then(function() {
+            showToast(successMessage);
+            return true;
+          }).catch(function() {
+            if (fallbackCopy(safeText)) {
+              showToast(successMessage);
+              return true;
+            }
+            showToast("复制失败，请手动复制");
+            return false;
+          });
+        }
+
+        if (fallbackCopy(safeText)) {
+          showToast(successMessage);
+          return Promise.resolve(true);
+        }
+
+        showToast("复制失败，请手动复制");
+        return Promise.resolve(false);
+      }
+
+      function normalizeColor(value, fallbackValue) {
+        var text = String(value == null ? "" : value).trim();
+        if (!text) {
+          return fallbackValue || "";
+        }
+        if (/^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?([0-9a-fA-F]{2})?$/.test(text)) {
+          return ("#" + text).toUpperCase();
+        }
+        if (/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?([0-9a-fA-F]{2})?$/.test(text)) {
+          return text.toUpperCase();
+        }
+        return text;
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function formatNumber(value) {
+        return Number(value).toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$" + "1");
+      }
+
+      function computeStrokeWidth(state) {
+        var base = Number(state.strokeWidth || 4);
+        var computed = base;
+        computed += ((Number(state.weight || 400) - 400) / 300) * 1.6;
+        computed += (Number(state.grade || 0) / 200) * 0.8;
+        computed += ((Number(state.opticalSize || 24) - 24) / 24) * 0.6;
+        return clamp(Math.round(computed * 100) / 100, 0.5, 8);
+      }
+
+      function isGraphicElement(element) {
+        if (!element || !element.localName) {
+          return false;
+        }
+        return ["path", "circle", "ellipse", "rect", "line", "polyline", "polygon", "use"].indexOf(element.localName) >= 0;
+      }
+
+      function canUseFill(element) {
+        return element && ["line", "polyline"].indexOf(element.localName) < 0;
+      }
+
+      function getStylePropertyValue(element, name) {
+        return element && element.style ? String(element.style.getPropertyValue(name) || "").trim() : "";
+      }
+
+      function shouldReplacePaintValue(value) {
+        var text = String(value == null ? "" : value).trim().toLowerCase();
+        if (!text) {
+          return false;
+        }
+        if (["none", "transparent", "inherit", "initial", "unset", "context-fill", "context-stroke"].indexOf(text) >= 0) {
+          return false;
+        }
+        return text.indexOf("url(") !== 0;
+      }
+
+      function getPaintInfo(element) {
+        var fillValue = element.getAttribute("fill") || getStylePropertyValue(element, "fill");
+        var strokeValue = element.getAttribute("stroke") || getStylePropertyValue(element, "stroke");
+        return {
+          hasFillPaint: shouldReplacePaintValue(fillValue),
+          hasStrokePaint: shouldReplacePaintValue(strokeValue)
+        };
+      }
+
+      function setElementValue(element, name, value) {
+        if (!element) {
+          return;
+        }
+        if (value == null || value === "") {
+          element.removeAttribute(name);
+          if (element.style) {
+            element.style.removeProperty(name);
+          }
+          return;
+        }
+        element.setAttribute(name, value);
+        if (element.style) {
+          element.style.setProperty(name, value);
+        }
+      }
+
+      function getMultiColorFill(state, runtimeState) {
+        var palette = [
+          normalizeColor(state.secondaryColor, "#2F88FF"),
+          normalizeColor(state.tertiaryColor, "#FFFFFF"),
+          normalizeColor(state.quaternaryColor, "#43CCF8"),
+          normalizeColor(state.color, "#333333")
+        ];
+        var value = palette[runtimeState.fillIndex % palette.length];
+        runtimeState.fillIndex += 1;
+        return value;
+      }
+
+      function applyStyleToElement(element, state, runtimeState) {
+        if (!isGraphicElement(element)) {
+          return;
+        }
+
+        var theme = state.theme || "original";
+        var paintInfo = getPaintInfo(element);
+        var primaryColor = normalizeColor(state.color, "#333333");
+        var secondaryColor = normalizeColor(state.secondaryColor, "#2F88FF");
+        var strokeWidthText = formatNumber(computeStrokeWidth(state));
+        var canFillNow = canUseFill(element);
+
+        if (theme === "original") {
+          if (primaryColor) {
+            if (paintInfo.hasFillPaint) {
+              setElementValue(element, "fill", primaryColor);
+            }
+            if (paintInfo.hasStrokePaint) {
+              setElementValue(element, "stroke", primaryColor);
+            }
+          }
+          if (paintInfo.hasStrokePaint) {
+            setElementValue(element, "stroke-width", strokeWidthText);
+            setElementValue(element, "stroke-linecap", state.strokeLinecap || "round");
+            setElementValue(element, "stroke-linejoin", state.strokeLinejoin || "round");
+          }
+          return;
+        }
+
+        if (theme === "outline") {
+          if (canFillNow) {
+            setElementValue(element, "fill", "none");
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+        else if (theme === "filled") {
+          if (canFillNow) {
+            setElementValue(element, "fill", primaryColor);
+          }
+          if (paintInfo.hasStrokePaint) {
+            setElementValue(element, "stroke", primaryColor);
+          }
+        }
+        else if (theme === "two-tone") {
+          if (canFillNow && (paintInfo.hasFillPaint || !paintInfo.hasStrokePaint)) {
+            setElementValue(element, "fill", secondaryColor);
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+        else if (theme === "multi-color") {
+          if (canFillNow && (paintInfo.hasFillPaint || !paintInfo.hasStrokePaint)) {
+            setElementValue(element, "fill", getMultiColorFill(state, runtimeState));
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+
+        setElementValue(element, "stroke-width", strokeWidthText);
+        setElementValue(element, "stroke-linecap", state.strokeLinecap || "round");
+        setElementValue(element, "stroke-linejoin", state.strokeLinejoin || "round");
+      }
+
+      function transformSvgMarkup(svgMarkup, state) {
+        var markup = String(svgMarkup || "").trim();
+        if (!markup) {
+          return "";
+        }
+
+        var parser = new DOMParser();
+        var documentNode = parser.parseFromString(markup, "image/svg+xml");
+        var svg = documentNode.documentElement;
+        if (!svg || !svg.localName || svg.localName.toLowerCase() !== "svg") {
+          return markup;
+        }
+
+        svg.setAttribute("width", String(state.size));
+        svg.setAttribute("height", String(state.size));
+        svg.style.setProperty("color", normalizeColor(state.color, "#333333"));
+
+        var runtimeState = { fillIndex: 0 };
+        Array.prototype.forEach.call(svg.querySelectorAll("*"), function(node) {
+          applyStyleToElement(node, state, runtimeState);
+        });
+
+        return new XMLSerializer().serializeToString(svg);
+      }
+
+      function renderChip(text, extraClass) {
+        if (!text) {
+          return "";
+        }
+        var className = "meta-chip" + (extraClass ? " " + extraClass : "");
+        return '<div class="' + className + '" title="' + escapeHtml(text) + '">' + escapeHtml(text) + '</div>';
+      }
+
+      function renderColorChip(hexValue) {
+        var color = normalizeColor(hexValue, "");
+        if (!color) {
+          return "";
+        }
+        return [
+          '<div class="meta-chip brand-color" title="品牌色 ' + escapeHtml(color) + '">',
+          '  <span class="color-dot" style="background:' + escapeHtml(color) + ';"></span>',
+          '  <span>' + escapeHtml(color) + '</span>',
+          '</div>'
+        ].join("");
+      }
+
+      function getStylePresetObject() {
+        return {
+          theme: styleState.theme,
+          size: Number(styleState.size),
+          color: normalizeColor(styleState.color, "#333333"),
+          secondaryColor: normalizeColor(styleState.secondaryColor, "#2F88FF"),
+          tertiaryColor: normalizeColor(styleState.tertiaryColor, "#FFFFFF"),
+          quaternaryColor: normalizeColor(styleState.quaternaryColor, "#43CCF8"),
+          strokeWidth: Number(formatNumber(computeStrokeWidth(styleState))),
+          strokeLinecap: styleState.strokeLinecap,
+          strokeLinejoin: styleState.strokeLinejoin,
+          weight: Number(styleState.weight),
+          grade: Number(styleState.grade),
+          opticalSize: Number(styleState.opticalSize),
+          background: styleState.background || "transparent"
+        };
+      }
+
+      function getCopyPayloadObject(item) {
+        var currentItem = item || {};
+        var preset = getStylePresetObject();
+        return {
+          imageName: currentItem.uniqueKey || "",
+          uniqueKey: currentItem.uniqueKey || "",
+          title: currentItem.mainTitle || currentItem.title || "",
+          library: currentItem.library || "",
+          theme: preset.theme,
+          size: preset.size,
+          color: preset.color,
+          secondaryColor: preset.secondaryColor,
+          tertiaryColor: preset.tertiaryColor,
+          quaternaryColor: preset.quaternaryColor,
+          strokeWidth: preset.strokeWidth,
+          strokeLinecap: preset.strokeLinecap,
+          strokeLinejoin: preset.strokeLinejoin,
+          weight: preset.weight,
+          grade: preset.grade,
+          opticalSize: preset.opticalSize,
+          background: preset.background,
+          copySource: "icon-design-search"
+        };
+      }
+
+      function getThemeLabel(theme) {
+        var value = String(theme || "").toLowerCase();
+        if (value === "outline") { return "线性"; }
+        if (value === "filled") { return "填充"; }
+        if (value === "two-tone") { return "双色"; }
+        if (value === "multi-color") { return "多色"; }
+        return "原图";
+      }
+
+      function renderPaletteDot(value) {
+        var color = normalizeColor(value, "");
+        if (!color) {
+          return "";
+        }
+        return [
+          '<span class="palette-dot" style="background:' + escapeHtml(color) + ';"></span>'
+        ].join("");
+      }
+
+      function getColorSuggestionTitle(item) {
+        var parts = [
+          String(item.title || ""),
+          "风格：" + getThemeLabel(item.theme || "original"),
+          String(item.summary || ""),
+          "主色：" + normalizeColor(item.color, "#333333"),
+          "副色：" + normalizeColor(item.secondaryColor, "#2F88FF")
+        ];
+        if (item.tertiaryColor) {
+          parts.push("第三色：" + normalizeColor(item.tertiaryColor, "#FFFFFF"));
+        }
+        return parts.filter(function(text) { return !!text; }).join(" | ");
+      }
+
+      function renderColorSuggestions() {
+        if (!palettePanel || !paletteList) {
+          return;
+        }
+        if (!colorSuggestions.length) {
+          palettePanel.style.display = "none";
+          return;
+        }
+
+        palettePanel.style.display = "";
+        paletteList.innerHTML = colorSuggestions.map(function(item, index) {
+          var activeClass = index === activeColorSuggestionIndex ? " active" : "";
+          var buttonTitle = getColorSuggestionTitle(item);
+          return [
+            '<button type="button" class="palette-button' + activeClass + '" data-palette-apply="' + index + '" title="' + escapeHtml(buttonTitle) + '">',
+            '  <span class="palette-swatches">',
+                 renderPaletteDot(item.color),
+                 renderPaletteDot(item.secondaryColor),
+                 renderPaletteDot(item.tertiaryColor),
+            '  </span>',
+            '  <span class="palette-label">' + escapeHtml(item.title || ("方案 " + (index + 1))) + '</span>',
+            '</button>'
+          ].join("");
+        }).join("");
+      }
+
+      function applyColorSuggestion(index) {
+        var suggestion = colorSuggestions[index];
+        if (!suggestion) {
+          return;
+        }
+        activeColorSuggestionIndex = index;
+        styleState.theme = suggestion.theme || styleState.theme;
+        styleState.color = normalizeColor(suggestion.color, styleState.color || "#333333");
+        styleState.secondaryColor = normalizeColor(suggestion.secondaryColor, styleState.secondaryColor || "#2F88FF");
+        styleState.tertiaryColor = normalizeColor(suggestion.tertiaryColor, styleState.tertiaryColor || "#FFFFFF");
+        styleState.quaternaryColor = normalizeColor(suggestion.quaternaryColor, styleState.quaternaryColor || "#43CCF8");
+        styleState.background = suggestion.background || styleState.background || "transparent";
+        syncControlsFromState();
+        applyPreviewStyles();
+        renderColorSuggestions();
+        setConfigPanelVisible(true);
+        showToast("已应用推荐配色：" + (suggestion.title || ("方案 " + (index + 1))));
+      }
+
+      function setConfigPanelVisible(visible) {
+        stylePanel.classList.toggle("show", !!visible);
+        if (palettePanel && colorSuggestions.length) {
+          palettePanel.classList.toggle("show", !!visible);
+        }
+        toggleConfigButton.classList.toggle("active", !!visible);
+        toggleConfigButton.textContent = visible ? "收起配置" : "显示配置";
+      }
+
+      function setGuidePanelVisible(visible) {
+        hideHoverPreview();
+        guideBackdrop.classList.toggle("show", !!visible);
+        guidePanel.classList.toggle("show", !!visible);
+        showGuideButton.classList.toggle("active", !!visible);
+        document.body.style.overflow = visible ? "hidden" : "";
+      }
+
+      function updateSelectedCard() {
+        Array.prototype.forEach.call(document.querySelectorAll(".card"), function(card) {
+          var index = Number(card.getAttribute("data-card-index"));
+          card.classList.toggle("selected", index === selectedItemIndex);
+        });
+      }
+
+      function renderPage() {
+        document.getElementById("queryText").textContent = data.queryText || "";
+        document.getElementById("resultCount").textContent = String(data.resultCount || 0);
+        document.getElementById("iconList").innerHTML = items.map(function(item, index) {
+          return [
+            '<li class="card" data-card-index="' + index + '">',
+            '  <div class="card-head">',
+            '    <div class="library-band" title="' + escapeHtml((item.libraryTitle || item.library) + " (" + (item.library || "") + ")") + '">',
+            '      <span class="library-name">' + escapeHtml(item.libraryTitle || item.library) + '</span>',
+            '    </div>',
+            '  </div>',
+            '  <div class="icon-box" data-item-index="' + index + '"><div class="icon-svg" data-item-index="' + index + '"></div></div>',
+            '  <div class="key-label">图片名称</div>',
+            '  <button type="button" class="key-value" data-copy-index="' + index + '" title="点击复制这张图的完整参数 JSON">' + escapeHtml(item.uniqueKey) + '</button>',
+            '  <div class="title-row">',
+            '    <div class="main-name" title="' + escapeHtml(item.mainTitle || item.title) + '">' + escapeHtml(item.mainTitle || item.title) + '</div>',
+            '    <div class="sub-name" title="' + escapeHtml(item.subTitle || item.name) + '">' + escapeHtml(item.subTitle || item.name) + '</div>',
+            '  </div>',
+            '  <div class="meta-row">',
+                 renderChip(item.category, ""),
+                 renderChip(item.variantText, "variant"),
+                 renderColorChip(item.colorHex),
+            '  </div>',
+            '</li>'
+          ].join("");
+        }).join("");
+
+        applyPreviewStyles();
+        updateSelectedCard();
+      }
+
+      function applyPreviewStyles() {
+        Array.prototype.forEach.call(document.querySelectorAll(".icon-svg"), function(container) {
+          var index = Number(container.getAttribute("data-item-index"));
+          var item = items[index];
+          if (!item) {
+            container.innerHTML = "";
+            return;
+          }
+          container.innerHTML = transformSvgMarkup(item.svgMarkup || "", styleState);
+        });
+        updateChoiceButtons();
+      }
+
+      function updateChoiceButtons() {
+        Array.prototype.forEach.call(document.querySelectorAll("[data-choice-group]"), function(button) {
+          var group = button.getAttribute("data-choice-group");
+          var value = button.getAttribute("data-choice-value");
+          button.classList.toggle("active", String(styleState[group]) === String(value));
+        });
+      }
+
+      function bindRangeAndNumber(rangeId, numberId, stateKey, parseMode) {
+        var range = document.getElementById(rangeId);
+        var number = document.getElementById(numberId);
+
+        function sync(value) {
+          var nextValue = parseMode === "float" ? parseFloat(value) : parseInt(value, 10);
+          if (!isFinite(nextValue)) {
+            return;
+          }
+          styleState[stateKey] = nextValue;
+          range.value = String(nextValue);
+          number.value = String(nextValue);
+          applyPreviewStyles();
+        }
+
+        range.value = String(styleState[stateKey]);
+        number.value = String(styleState[stateKey]);
+        range.addEventListener("input", function() { sync(range.value); });
+        number.addEventListener("input", function() { sync(number.value); });
+      }
+
+      function bindColorControl(pickerId, textId, stateKey, fallbackValue) {
+        var picker = document.getElementById(pickerId);
+        var text = document.getElementById(textId);
+
+        function sync(value) {
+          var nextValue = normalizeColor(value, fallbackValue);
+          if (!nextValue) {
+            nextValue = fallbackValue;
+          }
+          styleState[stateKey] = nextValue;
+          text.value = nextValue;
+          if (/^#[0-9A-F]{6}$/i.test(nextValue)) {
+            picker.value = nextValue;
+          }
+          applyPreviewStyles();
+        }
+
+        text.value = normalizeColor(styleState[stateKey], fallbackValue);
+        picker.value = /^#[0-9A-F]{6}$/i.test(text.value) ? text.value : fallbackValue;
+        picker.addEventListener("input", function() { sync(picker.value); });
+        text.addEventListener("change", function() { sync(text.value); });
+      }
+
+      function setRangeControlValue(rangeId, numberId, value) {
+        var range = document.getElementById(rangeId);
+        var number = document.getElementById(numberId);
+        if (range) {
+          range.value = String(value);
+        }
+        if (number) {
+          number.value = String(value);
+        }
+      }
+
+      function setColorControlValue(pickerId, textId, value, fallbackValue) {
+        var picker = document.getElementById(pickerId);
+        var text = document.getElementById(textId);
+        var nextValue = normalizeColor(value, fallbackValue);
+        if (!nextValue) {
+          nextValue = fallbackValue;
+        }
+        if (text) {
+          text.value = nextValue;
+        }
+        if (picker) {
+          picker.value = /^#[0-9A-F]{6}$/i.test(nextValue) ? nextValue : fallbackValue;
+        }
+      }
+
+      function syncControlsFromState() {
+        setRangeControlValue("sizeRange", "sizeNumber", styleState.size);
+        setRangeControlValue("strokeWidthRange", "strokeWidthNumber", styleState.strokeWidth);
+        setRangeControlValue("weightRange", "weightNumber", styleState.weight);
+        setRangeControlValue("gradeRange", "gradeNumber", styleState.grade);
+        setRangeControlValue("opticalSizeRange", "opticalSizeNumber", styleState.opticalSize);
+        setColorControlValue("colorPicker", "colorText", styleState.color, "#333333");
+        setColorControlValue("secondaryColorPicker", "secondaryColorText", styleState.secondaryColor, "#2F88FF");
+        setColorControlValue("tertiaryColorPicker", "tertiaryColorText", styleState.tertiaryColor, "#FFFFFF");
+        setColorControlValue("quaternaryColorPicker", "quaternaryColorText", styleState.quaternaryColor, "#43CCF8");
+        updateChoiceButtons();
+      }
+
+      bindRangeAndNumber("sizeRange", "sizeNumber", "size", "int");
+      bindRangeAndNumber("strokeWidthRange", "strokeWidthNumber", "strokeWidth", "float");
+      bindRangeAndNumber("weightRange", "weightNumber", "weight", "int");
+      bindRangeAndNumber("gradeRange", "gradeNumber", "grade", "int");
+      bindRangeAndNumber("opticalSizeRange", "opticalSizeNumber", "opticalSize", "int");
+      bindColorControl("colorPicker", "colorText", "color", "#333333");
+      bindColorControl("secondaryColorPicker", "secondaryColorText", "secondaryColor", "#2F88FF");
+      bindColorControl("tertiaryColorPicker", "tertiaryColorText", "tertiaryColor", "#FFFFFF");
+      bindColorControl("quaternaryColorPicker", "quaternaryColorText", "quaternaryColor", "#43CCF8");
+
+      Array.prototype.forEach.call(document.querySelectorAll("[data-choice-group]"), function(button) {
+        button.addEventListener("click", function() {
+          var group = button.getAttribute("data-choice-group");
+          styleState[group] = button.getAttribute("data-choice-value") || "";
+          applyPreviewStyles();
+        });
+      });
+
+      if (paletteList) {
+        paletteList.addEventListener("click", function(event) {
+          var button = event.target.closest("[data-palette-apply]");
+          if (!button) {
+            return;
+          }
+          applyColorSuggestion(Number(button.getAttribute("data-palette-apply")));
+        });
+      }
+
+      if (resetPaletteButton) {
+        resetPaletteButton.addEventListener("click", function() {
+          activeColorSuggestionIndex = -1;
+          styleState = Object.assign({}, defaultStyleState);
+          syncControlsFromState();
+          applyPreviewStyles();
+          renderColorSuggestions();
+          showToast("已重置为默认配色");
+        });
+      }
+
+      toggleConfigButton.addEventListener("click", function() {
+        setConfigPanelVisible(!stylePanel.classList.contains("show"));
+      });
+
+      showGuideButton.addEventListener("click", function(event) {
+        event.stopPropagation();
+        setGuidePanelVisible(!guidePanel.classList.contains("show"));
+      });
+
+      closeGuideButton.addEventListener("click", function() {
+        setGuidePanelVisible(false);
+      });
+
+      guideBackdrop.addEventListener("click", function() {
+        setGuidePanelVisible(false);
+      });
+
+      document.addEventListener("click", function(event) {
+        if (!guidePanel.contains(event.target) && !showGuideButton.contains(event.target)) {
+          setGuidePanelVisible(false);
+        }
+      });
+
+      document.getElementById("iconList").addEventListener("click", function(event) {
+        var target = event.target.closest(".card");
+        if (!target) {
+          return;
+        }
+        var index = Number(target.getAttribute("data-card-index"));
+        var item = items[index];
+        if (!item) {
+          return;
+        }
+        selectedItemIndex = index;
+        updateSelectedCard();
+        copyText(JSON.stringify(getCopyPayloadObject(item), null, 2), "完整参数 JSON 已复制");
+      });
+
+      setConfigPanelVisible(false);
+      setGuidePanelVisible(false);
+      renderColorSuggestions();
+      renderPage();
+
+      (function enableHoverPreview() {
+        var list = document.getElementById("iconList");
+        var preview = document.createElement("div");
+        var previewBox = document.createElement("div");
+        var previewTitle = document.createElement("div");
+
+        preview.className = "hover-preview";
+        previewBox.className = "hover-preview-box";
+        previewTitle.className = "hover-preview-title";
+        preview.appendChild(previewBox);
+        preview.appendChild(previewTitle);
+        document.body.appendChild(preview);
+
+        function hidePreview() {
+          preview.classList.remove("show");
+          previewBox.innerHTML = "";
+          previewTitle.textContent = "";
+        }
+        hideHoverPreview = hidePreview;
+
+        function updatePreviewPosition(event) {
+          var offset = 18;
+          var left = event.clientX + offset;
+          var top = event.clientY + offset;
+          var width = Math.min(420, window.innerWidth - 24);
+          var height = 360;
+
+          if (left + width > window.innerWidth - 12) {
+            left = event.clientX - width - offset;
+          }
+          if (top + height > window.innerHeight - 12) {
+            top = event.clientY - height - offset;
+          }
+          if (left < 12) {
+            left = 12;
+          }
+          if (top < 12) {
+            top = 12;
+          }
+
+          preview.style.left = left + "px";
+          preview.style.top = top + "px";
+        }
+
+        list.addEventListener("mouseover", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+          if (guidePanel.classList.contains("show")) {
+            return;
+          }
+
+          var card = box.closest(".card");
+          var titleNode = card ? card.querySelector(".main-name") : null;
+          previewBox.innerHTML = box.innerHTML || "";
+          previewTitle.textContent = titleNode ? (titleNode.textContent || "") : "";
+          updatePreviewPosition(event);
+          preview.classList.add("show");
+        });
+
+        list.addEventListener("mousemove", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+          if (guidePanel.classList.contains("show")) {
+            return;
+          }
+          updatePreviewPosition(event);
+        });
+
+        list.addEventListener("mouseout", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+
+          var related = event.relatedTarget;
+          if (related && box.contains(related)) {
+            return;
+          }
+          hidePreview();
+        });
+
+        window.addEventListener("scroll", hidePreview, { passive: true });
+        window.addEventListener("blur", hidePreview);
+      })();
+    })();
+  </script>
+</body>
+</html>

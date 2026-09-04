@@ -1,0 +1,20 @@
+# 构建产物
+bin/
+obj/
+dist/
+logs/
+.vs/
+TestResults/
+
+# 用户/IDE 临时文件
+*.user
+*.suo
+*.cache
+*.tmp
+*.bak
+*.lnk
+NUL
+
+# 日志与验证输出
+*.log
+verify_markers.txt

@@ -1,0 +1,401 @@
+﻿<UserControl 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:c="clr-namespace:SCADAServis.Controls" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
+	x:Class="SCADAServis.Controls.ganttUC"
+    mc:Ignorable="d"
+    Background="AliceBlue"
+   
+    >
+
+    <UserControl.Resources>
+
+        <Style x:Key="ganttItem" TargetType="{x:Type Border}" >
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                	<Setter Property="Effect" >
+                		<Setter.Value>
+                			<DropShadowEffect BlurRadius="8"  Color="Gray" Opacity=".3" ShadowDepth="0"  />
+                		</Setter.Value>
+                	</Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <LinearGradientBrush x:Key="ganttItem.0.background"  StartPoint="0,0" EndPoint="1,0" >
+        	<GradientStop Color="#FF61AAFF" Offset="0"/>
+			<GradientStop Color="#FF84BDFF" Offset="0.996"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ganttItem.1.background"  StartPoint="0,0" EndPoint="1,0">
+        	<GradientStop Color="#FF56E7C9" Offset="0"/>
+        	<GradientStop Color="#FF95FFE9" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ganttItem.2.background"  StartPoint="0,0" EndPoint="1,0">
+        	<GradientStop Color="#FF9DFF56" Offset="0"/>
+        	<GradientStop Color="#FFEEFFD5" Offset="0.992"/>
+        </LinearGradientBrush>
+
+     
+        <Style x:Key="ganttRowCaptionBorder" TargetType="{x:Type Border}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="5,0,10,0"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="Gainsboro"/>
+            <Setter Property="Background">
+            	<Setter.Value>
+            		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            			<GradientStop Color="#66E4E4E4" Offset="0"/>
+            			<GradientStop Color="#64D6D6D6" Offset="1"/>
+            		</LinearGradientBrush>
+            	</Setter.Value>
+            </Setter>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style x:Key="ganttContentRowBorder" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#FFE4E4E4"/>
+        </Style>
+        <Style x:Key="ganttGroupContentBorder" TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="5,5,5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Silver"/>
+        </Style>
+        <Style x:Key="ganttRowCaptionText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ganttVerticalSplitter" TargetType="{x:Type GridSplitter}">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="BorderBrush" Value="Silver"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+
+   <Style x:Key="ganttGroupExpander" TargetType="{x:Type Expander}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Border SnapsToDevicePixels="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="0" Margin="0">
+                            <DockPanel>
+                        		<Border DockPanel.Dock="Top" Margin="1,0,1,1" MinWidth="0" MinHeight="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="#FFBABABA">
+                            		<ToggleButton x:Name="HeaderSite" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" FontSize="13.333" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" Foreground="Black" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Cursor="Hand" Height="22.61" BorderBrush="#FF3D3D3D" Padding="1,4,1,1" FontWeight="Bold" FontFamily="Verdana">
+                            			<ToggleButton.Background>
+                            				<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                            					<GradientStop Color="#FFD4D4D4" Offset="0"/>
+                            					<GradientStop Color="#FFE2E2E2" Offset="1"/>
+                            				</LinearGradientBrush>
+                            			</ToggleButton.Background>
+                            			<ToggleButton.Style>
+                            				<Style TargetType="{x:Type ToggleButton}">
+                            					<Setter Property="Template">
+                            						<Setter.Value>
+                            							<ControlTemplate TargetType="{x:Type ToggleButton}">
+                            								<Border Padding="0" Background="{TemplateBinding Background}">
+                            									<Grid SnapsToDevicePixels="False" Background="{x:Null}">
+                            										<Grid.ColumnDefinitions>
+                            											<ColumnDefinition Width="21"/>
+                            											<ColumnDefinition Width="*"/>
+                            										</Grid.ColumnDefinitions>
+                            										<Border x:Name="Bd" Width="19" Height="19" SnapsToDevicePixels="True" Background="{x:Null}" BorderThickness="0" Margin="0" BorderBrush="#00000000">
+                            											<Path x:Name="arrow" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Bottom" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5" Stroke="Black" RenderTransformOrigin="-0.145,0.202" Margin="0,0,0,6.469"/>
+                            										</Border>
+                            										<ContentControl Foreground="{TemplateBinding Foreground}" Grid.Column="1" Margin="4,0,0,0" FontWeight="{TemplateBinding FontWeight}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}">
+                            											<ContentPresenter SnapsToDevicePixels="True" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" Height="22.61" Margin="{TemplateBinding Padding}" />
+                            										</ContentControl>
+                            									</Grid>
+                            								</Border>
+                            								<ControlTemplate.Triggers>
+                            									<Trigger Property="IsChecked" Value="True">
+                            										<Setter Property="Data" TargetName="arrow" Value="M1,4.5L4.5,1 8,4.5"/>
+                            									</Trigger>
+                            									<Trigger Property="IsMouseOver" Value="True"/>
+                            									<Trigger Property="IsPressed" Value="True"/>
+                            								</ControlTemplate.Triggers>
+                            							</ControlTemplate>
+                            						</Setter.Value>
+                            					</Setter>
+                            				</Style>
+                            			</ToggleButton.Style>
+                            			<ToggleButton.FocusVisualStyle>
+                            				<Style>
+                            					<Setter Property="Control.Template">
+                            						<Setter.Value>
+                            							<ControlTemplate>
+                            								<Border>
+                            									<Rectangle Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1" Margin="0" SnapsToDevicePixels="True"/>
+                            								</Border>
+                            							</ControlTemplate>
+                            						</Setter.Value>
+                            					</Setter>
+                            				</Style>
+                            			</ToggleButton.FocusVisualStyle>
+                            		</ToggleButton>
+                            	</Border>
+                        		<Border DockPanel.Dock="Bottom" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" BorderBrush="#FFC8C8C8" BorderThickness="1,1,1,0" Margin="0,3,3,3" >
+                        			<ContentPresenter x:Name="ExpandSite" Focusable="False" Visibility="Collapsed" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        		</Border>
+                        	</DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Right">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <Grid SnapsToDevicePixels="False" Background="Transparent">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="19"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+                                                                <Border>
+                                                                    <Path x:Name="arrow" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5">
+                                                                        <Path.LayoutTransform>
+                                                                            <RotateTransform Angle="-90"/>
+                                                                        </Path.LayoutTransform>
+                                                                    </Path>
+                                                                </Border>
+                                                                <ContentPresenter HorizontalAlignment="Center" Margin="0,4,0,0" VerticalAlignment="Top" SnapsToDevicePixels="True" Grid.Row="1" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter Property="Data" TargetName="arrow" Value="M1,4.5L4.5,1 8,4.5"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True"/>
+                                                            <Trigger Property="IsPressed" Value="True"/>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Up">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Top"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Bottom"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <Grid SnapsToDevicePixels="False" Background="Transparent">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="19"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Border x:Name="Bd" Width="19" Height="19" SnapsToDevicePixels="True" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"  BorderThickness="1" BorderBrush="#00000000">
+                                                                    <Path x:Name="arrow" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5">
+                                                                        <Path.LayoutTransform>
+                                                                            <RotateTransform Angle="180"/>
+                                                                        </Path.LayoutTransform>
+                                                                    </Path>
+                                                                </Border>
+                                                                <ContentPresenter HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" SnapsToDevicePixels="True" Grid.Column="1" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter Property="Data" TargetName="arrow" Value="M1,4.5L4.5,1 8,4.5"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True"/>
+                                                            <Trigger Property="IsPressed" Value="True"/>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Left">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <Grid SnapsToDevicePixels="False" Background="Transparent">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="19"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+                                                                <Border>
+                                                                    <Path x:Name="arrow" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5">
+                                                                        <Path.LayoutTransform>
+                                                                            <RotateTransform Angle="90"/>
+                                                                        </Path.LayoutTransform>
+                                                                    </Path>
+                                                                </Border>
+                                                                <ContentPresenter HorizontalAlignment="Center" Margin="0,4,0,0" VerticalAlignment="Top" SnapsToDevicePixels="True" Grid.Row="1" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter Property="Data" TargetName="arrow" Value="M1,4.5L4.5,1 8,4.5"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True"/>
+                                                            <Trigger Property="IsPressed" Value="True"/>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    	<Style x:Key="ButtonFocusVisual">
+    		<Setter Property="Control.Template">
+    			<Setter.Value>
+    				<ControlTemplate>
+    					<Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"/>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    	<LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+    		<GradientStop Color="#F3F3F3" Offset="0"/>
+    		<GradientStop Color="#EBEBEB" Offset="0.5"/>
+    		<GradientStop Color="#DDDDDD" Offset="0.5"/>
+    		<GradientStop Color="#CDCDCD" Offset="1"/>
+    	</LinearGradientBrush>
+    	<SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070"/>
+
+
+    	<Style x:Key="CalendarButtonStyle" TargetType="{x:Type Button}">
+    		<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+    		<Setter Property="Background">
+    			<Setter.Value>
+    				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+    					<GradientStop Color="#97E9D9D9" Offset="0"/>
+    					<GradientStop Color="#71FFFFFF" Offset="1"/>
+    				</LinearGradientBrush>
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="BorderBrush" Value="#DC7C7C7C"/>
+    		<Setter Property="BorderThickness" Value="1"/>
+			    		<Setter Property="Margin" Value="3,0,2,0"/>
+    		<Setter Property="Foreground" Value="#FF0B0D2B"/>
+    		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+    		<Setter Property="VerticalContentAlignment" Value="Center"/>
+    		<Setter Property="Padding" Value="7,1"/>
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="{x:Type Button}">
+    					<Microsoft_Windows_Themes:ButtonChrome x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
+    						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    					</Microsoft_Windows_Themes:ButtonChrome>
+    					<ControlTemplate.Triggers>
+    						<Trigger Property="IsKeyboardFocused" Value="true">
+    							<Setter Property="RenderDefaulted" TargetName="Chrome" Value="true"/>
+    						</Trigger>
+    						<Trigger Property="ToggleButton.IsChecked" Value="true">
+    							<Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
+    						</Trigger>
+    						<Trigger Property="IsEnabled" Value="false">
+    							<Setter Property="Foreground" Value="#ADADAD"/>
+    						</Trigger>
+    					</ControlTemplate.Triggers>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="FontSize" Value="14.667"/>
+    	</Style>
+
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Border Margin="2,2,6,6" BorderBrush="#FFB1B1B1" BorderThickness="1">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="VisualStateGroup">
+                    <VisualStateGroup.Transitions>
+                        <VisualTransition GeneratedDuration="0:0:1.5"/>
+                    </VisualStateGroup.Transitions>
+                    <VisualState x:Name="LeftScrollVisible"/>
+                    <VisualState x:Name="RightScrollVisible">
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="path1">
+                                <SplineDoubleKeyFrame KeyTime="0" Value="0.4"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="ScrollsInvisible"/>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,3,10">
+                    <Button Style="{DynamicResource CalendarButtonStyle}" Content="Week" Click="Button_Click" />
+                    <Button Style="{DynamicResource CalendarButtonStyle}" Content="Day" Click="Button_Click_1" />
+                    <Button Style="{DynamicResource CalendarButtonStyle}" Content="Hour" Click="Button_Click_2" />
+                    <Button Style="{DynamicResource CalendarButtonStyle}" Content="Minute" Click="Button_Click_3" />
+                </StackPanel>
+
+
+                <Grid Grid.Row="1">
+
+                    <ScrollViewer VerticalScrollBarVisibility="Visible"  MinHeight="100"  >
+                        <ContentControl MouseWheel="ganttContainer_MouseWheel">
+                            <StackPanel>
+                                <StackPanel x:Name="groupsContainer" Orientation="Vertical"/>
+                                <c:ganttTimeHeader x:Name="TimeHeader" Margin="204,00,0,0" Grid.Row="2"/>
+                            </StackPanel>
+                        </ContentControl>
+
+                    </ScrollViewer>
+                    <c:GanttLeftScrollUC HorizontalAlignment="Left" Margin="210,0,0,0" />
+                    <c:GanttRightScrollUC HorizontalAlignment="Right" Margin="0,0,0,0" />
+                    <c:ganttCalendar x:Name="calendar" Visibility="Hidden" HorizontalAlignment="Center" MinHeight="200" MinWidth="280" VerticalAlignment="Center" Opacity="0.85" />
+
+                </Grid>
+
+
+
+
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

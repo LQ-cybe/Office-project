@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "requestCount": 1,
+  "foundCount": 1,
+  "missingCount": 0,
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:timeline",
+      "library": "tabler-icons",
+      "sourceId": "04733",
+      "category": "System",
+      "categoryCN": "系统",
+      "categoryDisplay": "线性 · 系统 (System)",
+      "name": "timeline",
+      "title": "Timeline",
+      "svgFileName": "timeline.svg",
+      "svg": "<!--\ncategory: System\ntags: [process, plan, planning, diagram, chart, roadmap, timeline]\nversion: \"1.55\"\nunicode: \"f031\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 16l6 -7l5 5l5 -6\" />\n  <path d=\"M14 14a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M9 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M3 16a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M19 8a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n</svg>\n",
+      "originalSvg": "<!--\ncategory: System\ntags: [process, plan, planning, diagram, chart, roadmap, timeline]\nversion: \"1.55\"\nunicode: \"f031\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 16l6 -7l5 5l5 -6\" />\n  <path d=\"M14 14a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M9 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M3 16a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n  <path d=\"M19 8a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\" />\n</svg>\n",
+      "styleApplied": false,
+      "resolvedCatalog": "tabler-icons",
+      "resolvedStylePreset": null
+    }
+  ],
+  "missing": [],
+  "stylePreset": null,
+  "note": "svg 字段返回原始 SVG。若传入 -StylePreset，则 svg 字段返回应用样式后的 SVG。"
+}

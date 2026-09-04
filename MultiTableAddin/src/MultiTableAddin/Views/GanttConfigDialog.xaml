@@ -1,0 +1,50 @@
+<Window x:Class="MultiTableAddin.Views.GanttConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="甘特图字段设置" Width="520" MaxHeight="560"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource RegionBrush}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" x:Name="ContentPanel">
+            <DockPanel Margin="0,0,0,10">
+                <TextBlock Text="开始日期字段:" VerticalAlignment="Center" Width="96" />
+                <ComboBox x:Name="StartFieldCombo" Margin="8,0,0,0" VerticalContentAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,0,0,10">
+                <TextBlock Text="结束日期字段:" VerticalAlignment="Center" Width="96" />
+                <ComboBox x:Name="EndFieldCombo" Margin="8,0,0,0" VerticalContentAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,0,0,10">
+                <TextBlock Text="任务标签字段:" VerticalAlignment="Center" Width="96" />
+                <ComboBox x:Name="LabelFieldCombo" Margin="8,0,0,0" VerticalContentAlignment="Center" />
+            </DockPanel>
+
+            <DockPanel Margin="0,0,0,10">
+                <TextBlock Text="分组字段:" VerticalAlignment="Center" Width="96" />
+                <ComboBox x:Name="GroupFieldCombo" Margin="8,0,0,0" VerticalContentAlignment="Center" />
+            </DockPanel>
+
+            <TextBlock Text="显示字段:" VerticalAlignment="Top" Margin="0,4,0,4" />
+            <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4"
+                    Background="{DynamicResource RegionBrush}" Padding="8">
+                <ScrollViewer MaxHeight="260" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel x:Name="DisplayFieldsPanel" Orientation="Horizontal" />
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="确定" Width="80" Click="OnOkClick" Style="{StaticResource ButtonPrimary}" />
+            <Button Content="取消" Width="80" Margin="8,0,0,0" Click="OnCancelClick" Style="{StaticResource ButtonDefault}" />
+        </StackPanel>
+    </Grid>
+</Window>

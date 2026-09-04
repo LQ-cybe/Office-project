@@ -1,0 +1,8 @@
+<DnaLibrary Name="MultiTableAddin" RuntimeVersion="v8.0" RollForward="LatestPatch">
+  <ExternalLibrary Path="MultiTableAddin.dll" ExplicitExports="true" LoadFromBytes="true" Pack="true" IncludePdb="false" />
+  <Reference Path="ExcelDna.IntelliSense.dll" Pack="true" />
+  <Reference Path="HandyControl.dll" Pack="true" />
+  <Reference Path="Microsoft.Web.WebView2.Core.dll" Pack="true" />
+  <Reference Path="Microsoft.Web.WebView2.WinForms.dll" Pack="true" />
+  <Reference Path="NLog.dll" Pack="true" />
+</DnaLibrary>

@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="SCADAServis.Controls.ganttPointerUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" IsHitTestVisible="False" IsEnabled="False"
+    Width="1" >
+    <Border BorderThickness="1,0,0,0" Opacity=".6">
+        <Border.BorderBrush>
+            <SolidColorBrush  Color="gray"></SolidColorBrush>
+        </Border.BorderBrush>
+    </Border>
+</UserControl>

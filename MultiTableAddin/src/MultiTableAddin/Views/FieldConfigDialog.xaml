@@ -1,0 +1,128 @@
+<Window x:Class="MultiTableAddin.Views.FieldConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="字段配置" Width="680" Height="580"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="{DynamicResource RegionBrush}">
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                   HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="确定" Width="88" Margin="0,0,10,0"
+                    Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="4"
+                    Click="OnOkClick" />
+            <Button Content="取消" Width="88"
+                    Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                    Click="OnCancelClick" />
+        </StackPanel>
+
+        <TabControl x:Name="Tabs">
+            <!-- 字段类型：逐字段设定类型与选项 -->
+            <TabItem Header="字段类型">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="手动设定每个字段的类型与选项；类型为用户显式指定后不再被自动推断覆盖。"
+                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"
+                               Foreground="{DynamicResource ThirdlyTextBrush}" />
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="FieldRows" Margin="0,0,6,0" />
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- 字段识别规则库：跨工作簿共享，可增删改 -->
+            <TabItem Header="字段识别规则">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="BtnAddRule" Content="新增" Width="72"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnAddRule" />
+                        <Button x:Name="BtnEditRule" Content="编辑" Width="72" Margin="8,0,0,0"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnEditRule" />
+                        <Button x:Name="BtnDeleteRule" Content="删除" Width="72" Margin="8,0,0,0"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnDeleteRule" />
+                        <Button x:Name="BtnResetRule" Content="重置默认" Width="88" Margin="8,0,0,0"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnResetRule" />
+                        <TextBlock Text="双击可编辑；规则库保存在 %AppData%\MultiTableAddin\field-rules.json"
+                                   VerticalAlignment="Center" Margin="12,0,0,0" FontSize="11"
+                                   Foreground="{DynamicResource ThirdlyTextBrush}" />
+                    </StackPanel>
+                    <ListView Grid.Row="1" x:Name="RuleList" SelectionMode="Single"
+                              MouseDoubleClick="OnRuleDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="说明" DisplayMemberBinding="{Binding Remark}" Width="150" />
+                                <GridViewColumn Header="关键词(;分隔)" DisplayMemberBinding="{Binding Keywords}" Width="200" />
+                                <GridViewColumn Header="匹配" DisplayMemberBinding="{Binding MatchModeLabel}" Width="60" />
+                                <GridViewColumn Header="类型" DisplayMemberBinding="{Binding TypeLabel}" Width="72" />
+                                <GridViewColumn Header="启用" DisplayMemberBinding="{Binding EnabledLabel}" Width="46" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+
+            <!-- 数量 × 单价 = 金额 三向联动 -->
+            <TabItem Header="数量×单价=金额">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="BtnAddLink" Content="新增" Width="72"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnAddLink" />
+                        <Button x:Name="BtnEditLink" Content="编辑" Width="72" Margin="8,0,0,0"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnEditLink" />
+                        <Button x:Name="BtnDeleteLink" Content="删除" Width="72" Margin="8,0,0,0"
+                                Style="{StaticResource ButtonDefault}" hc:BorderElement.CornerRadius="4"
+                                Click="OnDeleteLink" />
+                        <TextBlock Text="在表单/详情中修改数量或单价会自动重算金额"
+                                   VerticalAlignment="Center" Margin="12,0,0,0" FontSize="11"
+                                   Foreground="{DynamicResource ThirdlyTextBrush}" />
+                    </StackPanel>
+                    <ListBox Grid.Row="1" x:Name="LinkList" />
+                </Grid>
+            </TabItem>
+
+            <!-- 字段校验规则：必填 / 范围 / 长度 / 正则 -->
+            <TabItem Header="校验规则">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="双击字段可配置校验规则；保存后会在表单/详情录入时生效。"
+                               FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"
+                               Foreground="{DynamicResource ThirdlyTextBrush}" />
+                    <ListView Grid.Row="1" x:Name="ValidationList" SelectionMode="Single"
+                              MouseDoubleClick="OnValidationDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="字段名" DisplayMemberBinding="{Binding FieldName}" Width="160" />
+                                <GridViewColumn Header="必填" DisplayMemberBinding="{Binding RequiredText}" Width="46" />
+                                <GridViewColumn Header="最小值" DisplayMemberBinding="{Binding MinValueText}" Width="70" />
+                                <GridViewColumn Header="最大值" DisplayMemberBinding="{Binding MaxValueText}" Width="70" />
+                                <GridViewColumn Header="最短" DisplayMemberBinding="{Binding MinLengthText}" Width="54" />
+                                <GridViewColumn Header="最长" DisplayMemberBinding="{Binding MaxLengthText}" Width="54" />
+                                <GridViewColumn Header="正则" DisplayMemberBinding="{Binding RegexText}" Width="120" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "启动 Excel 调试插件": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Microsoft Office\\Root\\Office16\\EXCEL.EXE"
+    }
+  }
+}

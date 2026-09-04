@@ -1,0 +1,69 @@
+<Window x:Class="MultiTableAddin.Views.StatCardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="指标卡设置" Width="440" SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{DynamicResource RegionBrush}">
+    <Window.Resources>
+        <Style x:Key="RowLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="16">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="82" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="标题" Style="{StaticResource RowLabel}" />
+            <TextBox   Grid.Row="0" Grid.Column="1" x:Name="TitleBox" FontSize="12" Margin="0,0,0,10" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="统计字段" Style="{StaticResource RowLabel}" />
+            <ComboBox  Grid.Row="1" Grid.Column="1" x:Name="FieldCombo" FontSize="12" Margin="0,0,0,10" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="聚合方式" Style="{StaticResource RowLabel}" />
+            <ComboBox  Grid.Row="2" Grid.Column="1" x:Name="AggCombo" FontSize="12" Margin="0,0,0,10"
+                       DisplayMemberPath="Value" SelectedValuePath="Key" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="数值格式" Style="{StaticResource RowLabel}" />
+            <ComboBox  Grid.Row="3" Grid.Column="1" x:Name="FormatCombo" FontSize="12" Margin="0,0,0,10" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="强调色" Style="{StaticResource RowLabel}" />
+            <ComboBox  Grid.Row="4" Grid.Column="1" x:Name="ColorCombo" FontSize="12" Margin="0,0,0,10" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="附加筛选" Style="{StaticResource RowLabel}" />
+            <TextBox   Grid.Row="5" Grid.Column="1" x:Name="FilterBox" FontSize="12"
+                       hc:InfoElement.Placeholder="例如 [状态] = '已完成'" />
+        </Grid>
+
+        <TextBlock Text="附加筛选只作用于本指标卡，语法与视图筛选一致，支持 AND / OR。"
+                   FontSize="11" TextWrapping="Wrap" Margin="82,6,0,0"
+                   Foreground="{DynamicResource ThirdlyTextBrush}" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+            <Button Content="确定" Width="88" Margin="0,0,10,0"
+                    Style="{StaticResource ButtonPrimary}"
+                    hc:BorderElement.CornerRadius="4" Click="OnOkClick" />
+            <Button Content="取消" Width="88"
+                    Style="{StaticResource ButtonDefault}"
+                    hc:BorderElement.CornerRadius="4" Click="OnCancelClick" />
+        </StackPanel>
+    </StackPanel>
+</Window>

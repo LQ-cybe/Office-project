@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="MultiTableAddin.Views.PopupDemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d">
+    <Grid Margin="16" Background="{DynamicResource RegionBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <hc:Card Padding="18" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="MultiTableAddin 弹出窗口示例" FontSize="20" FontWeight="SemiBold" />
+                <TextBlock Margin="0,8,0,0"
+                           Text="这个页面通过 WinForms 承载 WPF 的方式弹出，并显式接入 HandyControl 主题与样式。"
+                           TextWrapping="Wrap" />
+                <TextBlock Margin="0,6,0,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           Text="适合继续扩展为注册、配置、登录、导入导出、授权中心等独立业务窗口。当前模板默认使用 WinForms 包 WPF，并优先通过 Form.Show() 提供非模态体验；若目标运行时较高且焦点不稳，应改为 ShowDialog() 或保留 Interactive 手动开关。"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </hc:Card>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <hc:Card Grid.Column="0" Padding="18" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="示例输入" FontWeight="SemiBold" FontSize="15" />
+                    <TextBox x:Name="UserNameTextBox"
+                             Margin="0,8,0,8"
+                             MinHeight="36"
+                             hc:InfoElement.Placeholder="请输入用户名称" />
+                    <TextBox x:Name="LicenseTextBox"
+                             Margin="0,0,0,8"
+                             MinHeight="36"
+                             hc:InfoElement.Placeholder="请输入激活码或备注" />
+                    <ToggleButton x:Name="InteractiveToggleButton"
+                                  Width="180"
+                                  Height="34"
+                                  Margin="0,0,0,8"
+                                  HorizontalAlignment="Left"
+                                  IsChecked="True"
+                                  Content="Excel 可交互"
+                                  ToolTip="这是人工排查/缓解焦点问题的临时开关，不是万能修复方案。勾选表示 Application.Interactive=true，便于返回工作簿浏览、切工作表和复制内容；取消勾选会临时设为 false，尽量避免文本输入被 Excel 抢走。若目标运行时较高仍不稳定，应评估改用 ShowDialog()。EditDirectlyInCell 对当前问题帮助不稳定，模板里不再依赖它。"
+                                  Checked="OnInteractiveToggleChanged"
+                                  Unchecked="OnInteractiveToggleChanged" />
+                    <TextBlock Margin="0,0,0,8"
+                               Foreground="{DynamicResource WarningBrush}"
+                               Text="如果输入内容掉到单元格编辑区，可先取消勾选这个开关，再回到输入框继续录入；需要去工作表里查看、切换或复制内容时，再重新勾选。"
+                               TextWrapping="Wrap" />
+                    <Button Width="120"
+                            Height="34"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource ButtonPrimary}"
+                            hc:BorderElement.CornerRadius="8"
+                            Content="模拟提交"
+                            Click="OnSaveClick" />
+                    <TextBlock x:Name="StatusTextBlock"
+                               Foreground="{DynamicResource PrimaryBrush}"
+                               Text="状态：等待输入"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </hc:Card>
+
+            <hc:Card Grid.Column="1" Padding="18">
+                <StackPanel>
+                    <TextBlock Text="功能说明" FontWeight="SemiBold" FontSize="15" />
+                    <hc:Tag Margin="0,8,0,4" Content="Ribbon 直接打开" />
+                    <hc:Tag Margin="0,0,0,4" Content="CTP 内可复用同一页面" />
+                    <hc:Tag Margin="0,0,0,4" Content="HandyControl 主题已接入" />
+                    <hc:Tag Margin="0,0,0,4" Content="支持手动切 Interactive" />
+                    <hc:Tag Margin="0,0,0,4" Content="适合继续补业务控件" />
+                    <Border Margin="0,10,0,0" Padding="10,8" Background="{DynamicResource LightDangerBrush}" CornerRadius="8">
+                        <TextBlock Foreground="{DynamicResource DangerBrush}"
+                                   Text="涉及高风险操作、失败结果或不可逆提示时，统一使用 Danger 主题色，不要单页硬编码红色。"
+                                   TextWrapping="Wrap" />
+                    </Border>
+                    <TextBlock Margin="0,10,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Text="如果后续要做会员中心、任务配置、批量导入等页面，可以在这个窗口上直接继续扩展。若用户电脑因为较高版本运行时出现焦点被 Excel 抢走的问题，可先手动切换 Interactive；若核心录入流程仍不稳定，应把关键窗口改为 ShowDialog()。"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </hc:Card>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Width="100"
+                    Height="34"
+                    Margin="0,0,8,0"
+                    Style="{StaticResource ButtonPrimary}"
+                    hc:BorderElement.CornerRadius="8"
+                    Content="写入日志"
+                    Click="OnSaveClick" />
+            <Button Width="100"
+                    Height="34"
+                    Margin="0,0,8,0"
+                    Style="{StaticResource ButtonInfo}"
+                    hc:BorderElement.CornerRadius="8"
+                    Content="打开日志"
+                    Click="OnOpenLogClick" />
+            <Button Width="100"
+                    Height="34"
+                    Style="{StaticResource ButtonDanger}"
+                    hc:BorderElement.CornerRadius="8"
+                    Content="关闭窗口"
+                    Click="OnCloseClick" />
+        </StackPanel>
+    </Grid>
+</UserControl>

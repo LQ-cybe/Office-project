@@ -1,0 +1,2538 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>图标搜索结果</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei UI", "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px 18px 28px;
+    }
+    .hero,
+    .style-panel,
+    .preset-popover {
+      background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+      border: 1px solid #d9e3f5;
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+      margin-bottom: 16px;
+    }
+    .hero {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+    .hero-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-main p,
+    .panel-tip {
+      margin: 0;
+      color: #475569;
+      line-height: 1.5;
+      font-size: 12px;
+    }
+    .hero-tip code,
+    .guide-section code {
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 1px 8px;
+      border-radius: 999px;
+    }
+    .hero-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .hero-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .palette-panel {
+      display: none;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+      border: 1px solid #d9e3f5;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .palette-panel.show {
+      display: block;
+    }
+    .palette-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .palette-title {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.2;
+      color: #334155;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .palette-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .palette-button {
+      min-width: 0;
+      max-width: 220px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid #dbe7f8;
+      background: #ffffff;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    }
+    .palette-button:hover,
+    .palette-button.active {
+      border-color: #60a5fa;
+      background: #eff6ff;
+      color: #1d4ed8;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.10);
+    }
+    .palette-swatches {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 0 0 auto;
+    }
+    .palette-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    }
+    .palette-label {
+      min-width: 0;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .palette-reset {
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .palette-reset:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .toolbar-button,
+    .toolbar-ghost,
+    .choice-button,
+    .action-button {
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      padding: 0 12px;
+    }
+    .toolbar-button.active,
+    .toolbar-button:hover,
+    .toolbar-ghost:hover {
+      border-color: #14b8a6;
+      background: #ecfeff;
+      color: #0f766e;
+      box-shadow: 0 8px 16px rgba(20, 184, 166, 0.08);
+    }
+    .style-panel {
+      padding: 10px 12px;
+      display: none;
+    }
+    .style-panel.show {
+      display: block;
+    }
+    .style-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .style-panel-title {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .style-grid {
+      display: block;
+    }
+    .style-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-row {
+      display: grid;
+      gap: 8px;
+    }
+    .control-row.metrics {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .control-row.choices {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    .control-row.colors {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .control-card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid #dbe7f8;
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+    .control-card.advanced {
+      background: rgba(248, 250, 252, 0.9);
+      border-color: #e2e8f0;
+    }
+    .control-card.advanced .control-label {
+      color: #475569;
+    }
+    .control-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .control-label {
+      margin: 0 0 6px;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .control-badge {
+      flex: 0 0 auto;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #6366f1;
+      font-size: 10px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+    .control-sub {
+      display: none;
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #64748b;
+    }
+    .range-row,
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .range-row input[type="range"] {
+      flex: 1 1 auto;
+      accent-color: #0f766e;
+    }
+    .range-row input[type="number"],
+    .color-row input[type="text"] {
+      width: 62px;
+      height: 32px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 8px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12px;
+    }
+    .color-row input[type="color"] {
+      width: 34px;
+      height: 32px;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .choice-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .choice-row.compact {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .choice-button.active,
+    .choice-button:hover,
+    .action-button:hover {
+      border-color: #14b8a6;
+      background: #ecfeff;
+      color: #0f766e;
+      box-shadow: 0 8px 16px rgba(20, 184, 166, 0.08);
+    }
+    .guide-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.28);
+      z-index: 10000;
+      display: none;
+      backdrop-filter: blur(2px);
+    }
+    .guide-backdrop.show {
+      display: block;
+    }
+    .guide-panel {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(760px, calc(100vw - 32px));
+      max-height: calc(100vh - 48px);
+      margin-bottom: 0;
+      padding: 18px 20px;
+      z-index: 10001;
+      display: none;
+      overflow: auto;
+      background: #ffffff;
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+      overscroll-behavior: contain;
+    }
+    .guide-panel.show {
+      display: block;
+    }
+    .guide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .guide-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      color: #0f172a;
+    }
+    .guide-close {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #475569;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .guide-close:hover {
+      border-color: #14b8a6;
+      color: #0f766e;
+    }
+    .guide-section {
+      margin-top: 12px;
+    }
+    .guide-section:first-child {
+      margin-top: 0;
+    }
+    .guide-section h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #0f172a;
+    }
+    .guide-text,
+    .guide-list,
+    .guide-table {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #475569;
+    }
+    .guide-list {
+      padding-left: 16px;
+    }
+    .guide-list li {
+      margin: 4px 0;
+    }
+    .guide-table {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 8px 10px;
+    }
+    .guide-key {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .guide-note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 282px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .card:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px);
+    }
+    .card.selected {
+      border-color: #60a5fa;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+    }
+    .card-head {
+      min-height: 34px;
+    }
+    .library-band {
+      width: 100%;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid #cde7e6;
+      background: linear-gradient(135deg, #f4fffe 0%, #e8fbff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .library-name {
+      min-width: 0;
+      flex: 0 1 auto;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #0f766e;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .icon-box {
+      height: 144px;
+      border-radius: 14px;
+      border: 1px dashed #cbd5e1;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      cursor: zoom-in;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      overflow: hidden;
+    }
+    .icon-box:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+      border-color: #93c5fd;
+    }
+    .icon-svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    .icon-svg svg {
+      max-width: 100%;
+      max-height: 100%;
+      overflow: visible;
+    }
+    .key-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .key-value {
+      font-size: 12px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      word-break: break-all;
+      font-family: Consolas, "Courier New", monospace;
+      cursor: pointer;
+      border: none;
+      text-align: left;
+      width: 100%;
+      min-height: 50px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .key-value:hover {
+      background: #dbeafe;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.10);
+      transform: translateY(-1px);
+    }
+    .card.selected .key-value {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .key-value:focus {
+      outline: 2px solid #93c5fd;
+      outline-offset: 2px;
+    }
+    .title-row {
+      display: grid;
+      grid-template-rows: 24px 18px;
+      gap: 4px;
+      min-height: 46px;
+    }
+    .main-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sub-name {
+      font-size: 11px;
+      color: #334155;
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta-row {
+      display: flex;
+      gap: 6px;
+      min-height: 28px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .meta-chip {
+      font-size: 11px;
+      line-height: 1.4;
+      color: #475569;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 4px 8px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta-chip.variant {
+      color: #6d28d9;
+      background: #f5f3ff;
+      border-color: #ddd6fe;
+    }
+    .meta-chip.brand-color {
+      color: #9a3412;
+      background: #fff7ed;
+      border-color: #fed7aa;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      flex: 0 0 auto;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      min-width: 180px;
+      max-width: 320px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.92);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hover-preview {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 420px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      box-shadow: 0 22px 44px rgba(15, 23, 42, 0.22);
+      opacity: 0;
+      transform: scale(0.96);
+      transform-origin: top left;
+      pointer-events: none;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      z-index: 10001;
+    }
+    .hover-preview.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .hover-preview-box {
+      height: 248px;
+      border-radius: 14px;
+      border: 1px solid #dbe4f0;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      overflow: hidden;
+    }
+    .hover-preview-box svg {
+      width: 220px;
+      height: 220px;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .hover-preview-title {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: normal;
+      word-break: break-word;
+      text-align: left;
+    }
+    @media (max-width: 1180px) {
+      .control-row.metrics,
+      .control-row.colors {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .control-row.choices {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 860px) {
+      .control-row.metrics,
+      .control-row.colors,
+      .choice-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .choice-row.compact {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .guide-panel {
+        width: calc(100vw - 24px);
+        top: 12px;
+        max-height: calc(100vh - 24px);
+        padding: 16px;
+      }
+      .hover-preview {
+        width: min(420px, calc(100vw - 24px));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <h1>图标候选结果</h1>
+        <p>关键词：<span id="queryText"></span></p>
+        <p class="hero-tip">第一轮优先搜主力库：通用图标先用 <code>tabler-icons,heroicons</code>，品牌用 <code>simple-icons</code>，技术栈用 <code>devicon</code>；确认候选后再点卡片复制完整参数 JSON</p>
+      </div>
+      <div class="hero-actions">
+        <button id="toggleConfigButton" type="button" class="toolbar-button" title="显示或隐藏参数调整">显示配置</button>
+        <button id="showGuideButton" type="button" class="toolbar-ghost" title="查看参数说明、风格生效范围与最佳实践">参数说明</button>
+        <div class="hero-count">共 <span id="resultCount"></span> 个</div>
+      </div>
+    </section>
+
+    <section class="palette-panel">
+      <div class="palette-bar">
+        <h2 class="palette-title" title="点击下方任意风格按钮即可试色；详细说明已放入悬停提示。">推荐配色</h2>
+        <div id="paletteList" class="palette-list"></div>
+        <button id="resetPaletteButton" type="button" class="palette-reset" title="重置为当前搜索页默认配色参数">重置</button>
+      </div>
+    </section>
+
+    <section class="style-panel">
+      <div class="style-panel-head">
+        <div>
+          <h2 class="style-panel-title">参数调整</h2>
+          <p class="panel-tip" title="Google 的 weight / grade / optical size 会统一映射到 SVG 描边算法；IconPark 的线性、填充、双色、多色也尽量复用这套规则。">悬停查看说明</p>
+        </div>
+      </div>
+      <div class="style-grid">
+        <div class="style-controls">
+          <div class="control-row metrics">
+            <div class="control-card" title="调整预览图标显示尺寸">
+              <div class="control-label">图标大小</div>
+              <div class="range-row">
+                <input id="sizeRange" type="range" min="16" max="256" step="1" />
+                <input id="sizeNumber" type="number" min="16" max="256" step="1" />
+              </div>
+            </div>
+            <div class="control-card" title="直接调整基础描边粗细，优先使用这一项">
+              <div class="control-label">线条粗细</div>
+              <div class="range-row">
+                <input id="strokeWidthRange" type="range" min="1" max="8" step="0.1" />
+                <input id="strokeWidthNumber" type="number" min="1" max="8" step="0.1" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。与线条粗细有部分重叠，主要用于整体粗细风格偏移">
+              <div class="control-label-row">
+                <div class="control-label">Weight</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="weightRange" type="range" min="100" max="700" step="50" />
+                <input id="weightNumber" type="number" min="100" max="700" step="50" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。影响比 Weight 更细，适合轻微强调或减弱">
+              <div class="control-label-row">
+                <div class="control-label">Grade</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="gradeRange" type="range" min="-25" max="200" step="25" />
+                <input id="gradeNumber" type="number" min="-25" max="200" step="25" />
+              </div>
+            </div>
+            <div class="control-card advanced" title="高级微调。按图标尺寸做视觉粗细补偿，通常保持默认即可">
+              <div class="control-label-row">
+                <div class="control-label">Optical Size</div>
+                <span class="control-badge">高级</span>
+              </div>
+              <div class="range-row">
+                <input id="opticalSizeRange" type="range" min="20" max="48" step="4" />
+                <input id="opticalSizeNumber" type="number" min="20" max="48" step="4" />
+              </div>
+            </div>
+          </div>
+          <div class="control-row choices">
+            <div class="control-card" title="切换原图、线性、填充、双色、多色">
+              <div class="control-label">图标风格</div>
+              <div class="choice-row" id="themeButtons">
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="original">原图</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="outline">线性</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="filled">填充</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="two-tone">双色</button>
+                <button type="button" class="choice-button" data-choice-group="theme" data-choice-value="multi-color">多色</button>
+              </div>
+            </div>
+            <div class="control-card" title="设置线条端点样式">
+              <div class="control-label">端点类型</div>
+              <div class="choice-row compact" id="linecapButtons">
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="butt">平</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="round">圆</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinecap" data-choice-value="square">方</button>
+              </div>
+            </div>
+            <div class="control-card" title="设置转角样式">
+              <div class="control-label">拐角类型</div>
+              <div class="choice-row compact" id="linejoinButtons">
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="miter">尖角</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="round">圆角</button>
+                <button type="button" class="choice-button" data-choice-group="strokeLinejoin" data-choice-value="bevel">切角</button>
+              </div>
+            </div>
+          </div>
+          <div class="control-row colors">
+            <div class="control-card" title="主描边或主填充颜色">
+              <div class="control-label">主色</div>
+              <div class="color-row">
+                <input id="colorPicker" type="color" />
+                <input id="colorText" type="text" placeholder="#333333" />
+              </div>
+            </div>
+            <div class="control-card" title="双色或多色模式的副色">
+              <div class="control-label">副色</div>
+              <div class="color-row">
+                <input id="secondaryColorPicker" type="color" />
+                <input id="secondaryColorText" type="text" placeholder="#2F88FF" />
+              </div>
+            </div>
+            <div class="control-card" title="多色模式的第三色">
+              <div class="control-label">第三色</div>
+              <div class="color-row">
+                <input id="tertiaryColorPicker" type="color" />
+                <input id="tertiaryColorText" type="text" placeholder="#FFFFFF" />
+              </div>
+            </div>
+            <div class="control-card" title="多色模式的第四色">
+              <div class="control-label">第四色</div>
+              <div class="color-row">
+                <input id="quaternaryColorPicker" type="color" />
+                <input id="quaternaryColorText" type="text" placeholder="#43CCF8" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="guideBackdrop" class="guide-backdrop"></div>
+    <div id="guidePanel" class="guide-panel">
+      <div class="guide-head">
+        <h2 class="guide-title">参数说明</h2>
+        <button id="closeGuideButton" type="button" class="guide-close" title="关闭说明面板">×</button>
+      </div>
+      <div class="guide-section">
+        <p class="guide-text">推荐顺序：先用 <code>1 到 2</code> 个主力库搜候选，再选 <code>图标风格</code>，然后调 <code>线条粗细</code> 和颜色，最后按需微调 <code>Weight / Grade / Optical Size</code>。</p>
+      </div>
+      <div class="guide-section">
+        <h3>参数最佳实践</h3>
+        <ul class="guide-list">
+          <li><span class="guide-key">图标大小</span>：影响预览尺寸，也会作为默认导出尺寸带进复制 JSON。</li>
+          <li><span class="guide-key">线条粗细</span>：主控制项，绝大多数场景优先调这一项。</li>
+          <li><span class="guide-key">Weight / Grade / Optical Size</span>：高级微调，和线条粗细有部分重叠，变化不明显时保持默认即可。</li>
+          <li><span class="guide-key">颜色</span>：先调主色；只有双色、多色时再继续调副色、第三色、第四色。</li>
+        </ul>
+      </div>
+      <div class="guide-section">
+        <h3>各风格下哪些参数会生效</h3>
+        <div class="guide-table">
+          <div class="guide-key">原图</div><div>尽量保留原始结构。主色只会替换原图已有的填充或描边；副色、第三色、第四色通常不生效。端点、拐角、线条粗细只对原图本身带描边的图标明显。</div>
+          <div class="guide-key">线性</div><div>主色、线条粗细、端点、拐角最明显；副色、第三色、第四色不生效。</div>
+          <div class="guide-key">填充</div><div>主色最明显；副色、第三色、第四色不生效。端点、拐角通常不明显，线条粗细只对少数仍带描边的元素有效。</div>
+          <div class="guide-key">双色</div><div>主色主要用于描边，副色主要用于填充；第三色、第四色不生效。端点、拐角只对带描边元素明显。</div>
+          <div class="guide-key">多色</div><div>主色通常用于描边，副色、第三色、第四色会轮换填充；端点、拐角只对带描边元素明显。</div>
+        </div>
+      </div>
+      <div class="guide-section">
+        <h3>为什么有些参数看起来没反应</h3>
+        <ul class="guide-list">
+          <li>很多图库的图标本质是纯填充形状，没有描边，这时端点、拐角、线条粗细变化会很弱，甚至看不出来。</li>
+          <li>非 IconPark 图库的填充、双色、多色属于通用近似算法，不一定和原图库官方主题系统完全一致。</li>
+          <li>如果怎么调都不明显，优先换成 <code>线性</code> 风格再试，通常更容易观察到变化。</li>
+        </ul>
+      </div>
+      <div class="guide-note">默认先搜主力库：通用功能图标优先 <code>tabler-icons,heroicons</code>，品牌优先 <code>simple-icons</code>，技术栈优先 <code>devicon</code>；<code>fluentui-system-icons</code>、<code>material-design-icons</code>、<code>remixicon</code> 更适合第二轮按场景扩展。上方“推荐配色”会按当前关键词给出 `2 到 3` 组试色方案，建议先点一下看整体风格，再决定是否细调。点击任意图标卡片后，会自动选中当前图片，并把图标名和全部样式参数一起复制成 JSON，可直接发给 AI，也可传给 <code>get_icon_svg.ps1 -StylePreset</code> 或 <code>export_icon_asset.ps1 -StylePreset</code> 使用。其中 <code>get_icon_svg.ps1 -StylePreset</code> 会返回应用样式后的 SVG，并额外保留原始 SVG 供回溯。</div>
+    </div>
+
+    <ol class="list" id="iconList"></ol>
+  </main>
+  <script>
+    window.__ICON_DATA__ = {
+  "queryText": "pin,pinned",
+  "resultCount": 48,
+  "styleDefaults": {
+    "theme": "original",
+    "size": 48,
+    "color": "#333333",
+    "secondaryColor": "#2F88FF",
+    "tertiaryColor": "#FFFFFF",
+    "quaternaryColor": "#43CCF8",
+    "strokeWidth": 4,
+    "strokeLinecap": "round",
+    "strokeLinejoin": "round",
+    "weight": 400,
+    "grade": 0,
+    "opticalSize": 24,
+    "background": "transparent"
+  },
+  "colorSuggestions": [
+    {
+      "id": "enterprise",
+      "title": "稳重企业风",
+      "summary": "默认图标先用蓝灰，强调图标再上科技蓝，适合后台、SaaS、控制台。",
+      "theme": "outline",
+      "color": "#475569",
+      "secondaryColor": "#2563EB",
+      "tertiaryColor": "#FFFFFF",
+      "quaternaryColor": "#DBEAFE",
+      "background": "transparent"
+    },
+    {
+      "id": "tech",
+      "title": "科技蓝紫风",
+      "summary": "偏冷、偏科技、偏数字感，适合 AI 工具、开发者产品、创新型页面。",
+      "theme": "two-tone",
+      "color": "#334155",
+      "secondaryColor": "#4F46E5",
+      "tertiaryColor": "#06B6D4",
+      "quaternaryColor": "#E0E7FF",
+      "background": "transparent"
+    },
+    {
+      "id": "calm",
+      "title": "清爽冷静风",
+      "summary": "适合通用功能图标和图表辅助图标，颜色克制，便于长期使用。",
+      "theme": "outline",
+      "color": "#334155",
+      "secondaryColor": "#0891B2",
+      "tertiaryColor": "#E0F2FE",
+      "quaternaryColor": "#FFFFFF",
+      "background": "transparent"
+    },
+    {
+      "id": "minimal",
+      "title": "极简黑白风",
+      "summary": "适合极简页面、白底界面和更克制的功能图标，优先用单色。",
+      "theme": "outline",
+      "color": "#0F172A",
+      "secondaryColor": "#64748B",
+      "tertiaryColor": "#F8FAFC",
+      "quaternaryColor": "#E2E8F0",
+      "background": "transparent"
+    },
+    {
+      "id": "fresh",
+      "title": "清新青绿风",
+      "summary": "适合轻产品、工具页、健康类和偏清爽的页面气质。",
+      "theme": "two-tone",
+      "color": "#334155",
+      "secondaryColor": "#14B8A6",
+      "tertiaryColor": "#DCFCE7",
+      "quaternaryColor": "#CCFBF1",
+      "background": "transparent"
+    },
+    {
+      "id": "warm",
+      "title": "暖色亲和风",
+      "summary": "更亲和、更内容化，适合运营位、落地页、生活方式和暖色参考图。",
+      "theme": "filled",
+      "color": "#EA580C",
+      "secondaryColor": "#FB7185",
+      "tertiaryColor": "#FFF7ED",
+      "quaternaryColor": "#FED7AA",
+      "background": "transparent"
+    },
+    {
+      "id": "brand",
+      "title": "品牌强调风",
+      "summary": "适合首页重点入口、品牌主视觉和需要更强识别度的按钮图标。",
+      "theme": "two-tone",
+      "color": "#1F2937",
+      "secondaryColor": "#2563EB",
+      "tertiaryColor": "#DBEAFE",
+      "quaternaryColor": "#FFFFFF",
+      "background": "transparent"
+    },
+    {
+      "id": "premium",
+      "title": "高级深金风",
+      "summary": "适合会员、高级版、金融感和偏质感的深色或中性页面。",
+      "theme": "filled",
+      "color": "#3F3F46",
+      "secondaryColor": "#D4A017",
+      "tertiaryColor": "#F5F5F4",
+      "quaternaryColor": "#E7E5E4",
+      "background": "transparent"
+    }
+  ],
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:filled:pin",
+      "title": "PIN",
+      "titleCN": "图钉",
+      "name": "pin",
+      "mainTitle": "图钉",
+      "subTitle": "PIN",
+      "category": "填充 · General (General)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "05853",
+      "variantText": "填充",
+      "colorHex": "",
+      "svgMarkup": "<!--\nversion: \"2.0\"\nunicode: \"f68d\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"currentColor\"\n>\n  <path d=\"M15.113 3.21l.094 .083l5.5 5.5a1 1 0 0 1 -1.175 1.59l-3.172 3.171l-1.424 3.797a1 1 0 0 1 -.158 .277l-.07 .08l-1.5 1.5a1 1 0 0 1 -1.32 .082l-.095 -.083l-2.793 -2.792l-3.793 3.792a1 1 0 0 1 -1.497 -1.32l.083 -.094l3.792 -3.793l-2.792 -2.793a1 1 0 0 1 -.083 -1.32l.083 -.094l1.5 -1.5a1 1 0 0 1 .258 -.187l.098 -.042l3.796 -1.425l3.171 -3.17a1 1 0 0 1 1.497 -1.26z\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:filled:pinned",
+      "title": "Pinned",
+      "titleCN": "Pinned",
+      "name": "pinned",
+      "mainTitle": "Pinned",
+      "subTitle": "tabler-icons:filled:pinned",
+      "category": "填充 · General (General)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "05854",
+      "variantText": "填充",
+      "colorHex": "",
+      "svgMarkup": "<!--\nversion: \"2.0\"\nunicode: \"f68e\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"currentColor\"\n>\n  <path d=\"M16 3a1 1 0 0 1 .117 1.993l-.117 .007v4.764l1.894 3.789a1 1 0 0 1 .1 .331l.006 .116v2a1 1 0 0 1 -.883 .993l-.117 .007h-4v4a1 1 0 0 1 -1.993 .117l-.007 -.117v-4h-4a1 1 0 0 1 -.993 -.883l-.007 -.117v-2a1 1 0 0 1 .06 -.34l.046 -.107l1.894 -3.791v-4.762a1 1 0 0 1 -.117 -1.993l.117 -.007h8z\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:pin",
+      "title": "PIN",
+      "titleCN": "图钉",
+      "name": "pin",
+      "mainTitle": "图钉",
+      "subTitle": "PIN",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03839",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [thing, localization, maps, clip, place, location, pin, navigation, attach, fix]\ncategory: Map\nversion: \"1.16\"\nunicode: \"ec9c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4\" />\n  <path d=\"M9 15l-4.5 4.5\" />\n  <path d=\"M14.5 4l5.5 5.5\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:pinned",
+      "title": "Pinned",
+      "titleCN": "Pinned",
+      "name": "pinned",
+      "mainTitle": "Pinned",
+      "subTitle": "tabler-icons:outline:pinned",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03842",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [board, attach, nail, pointed, corkboard, favourite, noticeboard, pinned, location, navigation]\ncategory: Map\nversion: \"1.31\"\nunicode: \"ed60\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 4v6l-2 4v2h10v-2l-2 -4v-6\" />\n  <path d=\"M12 16l0 5\" />\n  <path d=\"M8 4l8 0\" />\n</svg>\n",
+      "score": 136.0
+    },
+    {
+      "uniqueKey": "tabler-icons:filled:map-pin",
+      "title": "MAP PIN",
+      "titleCN": "地图图钉",
+      "name": "map-pin",
+      "mainTitle": "地图图钉",
+      "subTitle": "MAP PIN",
+      "category": "填充 · General (General)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "05790",
+      "variantText": "填充",
+      "colorHex": "",
+      "svgMarkup": "<!--\nversion: \"2.0\"\nunicode: \"f680\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"currentColor\"\n>\n  <path d=\"M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:adjustments-pin",
+      "title": "Adjustments PIN",
+      "titleCN": "调整图钉",
+      "name": "adjustments-pin",
+      "mainTitle": "调整图钉",
+      "subTitle": "Adjustments PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "00035",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [settings, attach, fix, secure, lock, hold, fasten, anchor, nail, clip]\nversion: \"2.10\"\nunicode: \"f806\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0\" />\n  <path d=\"M6 4v4\" />\n  <path d=\"M6 12v8\" />\n  <path d=\"M13.071 14.31a2 2 0 1 0 -1.071 3.69\" />\n  <path d=\"M12 4v10\" />\n  <path d=\"M12 18v2\" />\n  <path d=\"M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0\" />\n  <path d=\"M18 4v1\" />\n  <path d=\"M18 9v2.5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:basket-pin",
+      "title": "Basket PIN",
+      "titleCN": "Basket图钉",
+      "name": "basket-pin",
+      "mainTitle": "Basket图钉",
+      "subTitle": "Basket PIN",
+      "category": "线性 · E-commerce (E-commerce)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "00432",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: E-commerce\ntags: [attach, fix, fasten, stick, tack, secure, affix, anchor, bind, clasp]\nversion: \"2.28\"\nunicode: \"fb4f\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M17 10l-2 -6\" />\n  <path d=\"M7 10l2 -6\" />\n  <path d=\"M12 20h-4.756a3 3 0 0 1 -2.965 -2.544l-1.255 -7.152a2 2 0 0 1 1.977 -2.304h13.999a2 2 0 0 1 1.977 2.304l-.161 .92\" />\n  <path d=\"M13.866 13.28a2 2 0 1 0 -1.866 2.72\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:bell-pin",
+      "title": "Bell PIN",
+      "titleCN": "铃铛图钉",
+      "name": "bell-pin",
+      "mainTitle": "铃铛图钉",
+      "subTitle": "Bell PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "00485",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [attach, secure, fix, fasten, anchor, tack, bind, affix, clasp, stick]\nversion: \"2.10\"\nunicode: \"f81c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 17h-8a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6a2 2 0 1 1 4 0a7 7 0 0 1 4 6\" />\n  <path d=\"M9 17v1a3 3 0 0 0 3.64 2.931\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:calendar-pin",
+      "title": "Calendar PIN",
+      "titleCN": "日历图钉",
+      "name": "calendar-pin",
+      "mainTitle": "日历图钉",
+      "subTitle": "Calendar PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01104",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [attach, secure, affix, fasten, anchor, connect, fix, hold, link, bind]\nversion: \"2.10\"\nunicode: \"f82c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4\" />\n  <path d=\"M16 3v4\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M8 3v4\" />\n  <path d=\"M4 11h16\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:camera-pin",
+      "title": "Camera PIN",
+      "titleCN": "相机图钉",
+      "name": "camera-pin",
+      "mainTitle": "相机图钉",
+      "subTitle": "Camera PIN",
+      "category": "线性 · Media (Media)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01135",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Media\ntags: [attach, connect, fix, secure, fasten, affix, anchor, hold, link, stick]\nversion: \"2.10\"\nunicode: \"f83d\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 20h-7.5a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v2\" />\n  <path d=\"M14.933 12.366a3.001 3.001 0 1 0 -2.933 3.634\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:clock-pin",
+      "title": "Clock PIN",
+      "titleCN": "时钟图钉",
+      "name": "clock-pin",
+      "mainTitle": "时钟图钉",
+      "subTitle": "Clock PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01535",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [attach, secure, fasten, hold, fix, anchor, stick, keep, lock, steady]\nversion: \"2.10\"\nunicode: \"f849\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M20.971 11.278a9 9 0 1 0 -8.313 9.698\" />\n  <path d=\"M12 7v5l1.5 1.5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:cloud-pin",
+      "title": "Cloud PIN",
+      "titleCN": "云图钉",
+      "name": "cloud-pin",
+      "mainTitle": "云图钉",
+      "subTitle": "Cloud PIN",
+      "category": "线性 · 天气 (Weather)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01570",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Weather\ntags: [location, map, place, position, marker, point, spot, navigate, geotag, fix]\nversion: \"2.10\"\nunicode: \"f856\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 18.004h-5.343c-2.572 -.004 -4.657 -2.011 -4.657 -4.487c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-desktop-pin",
+      "title": "Device Desktop PIN",
+      "titleCN": "设备Desktop图钉",
+      "name": "device-desktop-pin",
+      "mainTitle": "设备Desktop图钉",
+      "subTitle": "Device Desktop PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01861",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [attach, fasten, fix, secure, anchor, tack, clip, affix, stick, bind]\nversion: \"2.10\"\nunicode: \"f869\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v6\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M7 20h5\" />\n  <path d=\"M9 16v4\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-imac-pin",
+      "title": "Device Imac PIN",
+      "titleCN": "设备Imac图钉",
+      "name": "device-imac-pin",
+      "mainTitle": "设备Imac图钉",
+      "subTitle": "Device Imac PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01887",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [attach, fasten, fix, secure, anchor, tack, clip, affix, stick, bind]\nversion: \"2.10\"\nunicode: \"f87d\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 17h-8a1 1 0 0 1 -1 -1v-12a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v7.5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M3 13h11\" />\n  <path d=\"M8 21h4.5\" />\n  <path d=\"M10 17l-.5 4\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-ipad-horizontal-pin",
+      "title": "Device Ipad Horizontal PIN",
+      "titleCN": "设备IpadHorizontal图钉",
+      "name": "device-ipad-horizontal-pin",
+      "mainTitle": "设备IpadHorizontal图钉",
+      "subTitle": "Device Ipad Horizontal PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01917",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [attach, fix, secure, hold, clip, anchor, fasten, tether, bind, connect]\nversion: \"2.10\"\nunicode: \"f89a\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 20h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5\" />\n  <path d=\"M9 17h3\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-ipad-pin",
+      "title": "Device Ipad PIN",
+      "titleCN": "设备Ipad图钉",
+      "name": "device-ipad-pin",
+      "mainTitle": "设备Ipad图钉",
+      "subTitle": "Device Ipad PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01929",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [mark, location, place, point, map, navigation, gps, spot, destination, marker]\nversion: \"2.10\"\nunicode: \"f8a5\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 21h-6.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6\" />\n  <path d=\"M9 18h3\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-mobile-pin",
+      "title": "Device Mobile PIN",
+      "titleCN": "设备Mobile图钉",
+      "name": "device-mobile-pin",
+      "mainTitle": "设备Mobile图钉",
+      "subTitle": "Device Mobile PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01955",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [mark, location, place, locate, navigation, tag, gps, spot, point, target]\nversion: \"2.10\"\nunicode: \"f8b8\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 21h-4.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v6\" />\n  <path d=\"M11 4h2\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M12 17v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-tablet-pin",
+      "title": "Device Tablet PIN",
+      "titleCN": "设备Tablet图钉",
+      "name": "device-tablet-pin",
+      "mainTitle": "设备Tablet图钉",
+      "subTitle": "Device Tablet PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "01990",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [tablet, attach, fasten, secure, affix, anchor, hold, tack, nail, bind]\nversion: \"2.10\"\nunicode: \"f8cb\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 21h-6.5a1 1 0 0 1 -1 -1v-16a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v7\" />\n  <path d=\"M12 16a1 1 0 0 0 0 2\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:device-watch-pin",
+      "title": "Device Watch PIN",
+      "titleCN": "设备Watch图钉",
+      "name": "device-watch-pin",
+      "mainTitle": "设备Watch图钉",
+      "subTitle": "Device Watch PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02017",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [attach, secure, fasten, bookmark, clip, stick, mark, peg, fix, place]\nversion: \"2.10\"\nunicode: \"f8de\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 18h-3a3 3 0 0 1 -3 -3v-6a3 3 0 0 1 3 -3h6a3 3 0 0 1 3 3v2\" />\n  <path d=\"M9 18v3h3.5\" />\n  <path d=\"M9 6v-3h6v3\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:devices-pin",
+      "title": "Devices PIN",
+      "titleCN": "设备图钉",
+      "name": "devices-pin",
+      "mainTitle": "设备图钉",
+      "subTitle": "Devices PIN",
+      "category": "线性 · Devices (Devices)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02043",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Devices\ntags: [attach, secure, fix, fasten, stick, place, bookmark, position, clip, hold]\nversion: \"2.10\"\nunicode: \"f8f1\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M13 14v-5a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v2\" />\n  <path d=\"M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h8\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M16 9h2\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:droplet-pin",
+      "title": "Droplet PIN",
+      "titleCN": "水滴图钉",
+      "name": "droplet-pin",
+      "mainTitle": "水滴图钉",
+      "subTitle": "Droplet PIN",
+      "category": "线性 · 设计 (Design)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02122",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Design\ntags: [locate, mark, fix, attach, secure, fasten, anchor, place, determine, position]\nversion: \"2.10\"\nunicode: \"f904\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M18.064 10.877l-4.89 -7.26c-.42 -.625 -1.287 -.803 -1.936 -.397a1.376 1.376 0 0 0 -.41 .397l-4.893 7.26c-1.695 2.838 -1.035 6.441 1.567 8.546a7.163 7.163 0 0 0 5.102 1.554\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:eye-pin",
+      "title": "EYE PIN",
+      "titleCN": "查看图钉",
+      "name": "eye-pin",
+      "mainTitle": "查看图钉",
+      "subTitle": "EYE PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02208",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [attach, fasten, secure, vision, sight, hold, fix, stick, view, focus]\nversion: \"2.28\"\nunicode: \"fb75\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0\" />\n  <path d=\"M12 18c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.362 0 6.202 1.745 8.517 5.234\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:filter-2-pin",
+      "title": "Filter 2 PIN",
+      "titleCN": "筛选2图钉",
+      "name": "filter-2-pin",
+      "mainTitle": "筛选2图钉",
+      "subTitle": "Filter 2 PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02344",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [filter, pin, sort, organize, arrange, select, refine, sieve, screen, attach]\ncategory: System\nversion: \"3.32\"\nunicode: \"10153\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 6h16\" />\n  <path d=\"M6 12h10\" />\n  <path d=\"M9 18h3\" />\n  <path d=\"M19 18v.01m2.121 2.111c.42 -.419 .706 -.954 .821 -1.536c.116 -.582 .056 -1.185 -.17 -1.733c-.227 -.548 -.611 -1.017 -1.105 -1.347c-.493 -.33 -1.073 -.506 -1.667 -.506c-.593 0 -1.173 .176 -1.667 .506c-.493 .33 -.878 .798 -1.105 1.347c-.227 .548 -.286 1.151 -.17 1.733c.116 .582 .402 1.116 .821 1.536c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879l-2.121 -2.121\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:filter-pin",
+      "title": "Filter PIN",
+      "titleCN": "筛选图钉",
+      "name": "filter-pin",
+      "mainTitle": "筛选图钉",
+      "subTitle": "Filter PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02367",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [attach, fix, secure, mark, stick, anchor, place, location, tag, position]\nversion: \"2.28\"\nunicode: \"fb85\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 20l-3 1v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:flag-pin",
+      "title": "Flag PIN",
+      "titleCN": "旗帜图钉",
+      "name": "flag-pin",
+      "mainTitle": "旗帜图钉",
+      "subTitle": "Flag PIN",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02412",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [attach, fix, anchor, mark, stick, position, secure, location, tag, place]\nversion: \"2.28\"\nunicode: \"fb96\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.857 14.675a5.016 5.016 0 0 1 -.857 -.675a5 5 0 0 0 -7 0v-9a5 5 0 0 1 7 0a5 5 0 0 0 7 0v6\" />\n  <path d=\"M5 21v-7\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:folder-pin",
+      "title": "Folder PIN",
+      "titleCN": "文件夹图钉",
+      "name": "folder-pin",
+      "mainTitle": "文件夹图钉",
+      "subTitle": "Folder PIN",
+      "category": "线性 · 文档 (Document)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02459",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Document\ntags: [attach, secure, fasten, cling, stick, anchor, fixate, immobilize, tie, press]\nversion: \"2.10\"\nunicode: \"f916\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 19h-7a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2.5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:heart-pin",
+      "title": "Heart PIN",
+      "titleCN": "爱心图钉",
+      "name": "heart-pin",
+      "mainTitle": "爱心图钉",
+      "subTitle": "Heart PIN",
+      "category": "线性 · 形状 (Shapes)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "02631",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [location, mark, place, point, spot, site, fix, navigate, map, heart]\ncategory: Shapes\nversion: \"2.28\"\nunicode: \"fba8\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 20l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 0 1 8.5 5.179\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:location-pin",
+      "title": "Location PIN",
+      "titleCN": "Location图钉",
+      "name": "location-pin",
+      "mainTitle": "Location图钉",
+      "subTitle": "Location PIN",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03053",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [marker, point, drop, pointer, site, place, spot, map, indicator, location]\nversion: \"2.28\"\nunicode: \"fbbb\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 18l-2 -4l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5l-2.901 8.034\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:lock-pin",
+      "title": "Lock PIN",
+      "titleCN": "锁定图钉",
+      "name": "lock-pin",
+      "mainTitle": "锁定图钉",
+      "subTitle": "Lock PIN",
+      "category": "线性 · 系统 (System)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03081",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: System\ntags: [secure, code, number, access, key, protection, guard, password, entry, lock]\nversion: \"2.10\"\nunicode: \"f92f\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12.5 21h-5.5a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2h10c.24 0 .47 .042 .683 .12\" />\n  <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\" />\n  <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:mail-pin",
+      "title": "Mail PIN",
+      "titleCN": "邮件图钉",
+      "name": "mail-pin",
+      "mainTitle": "邮件图钉",
+      "subTitle": "Mail PIN",
+      "category": "线性 · 沟通 (Communication)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03133",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Communication\ntags: [location, anchor, place, marker, position, spot, fix, attach, locator, point]\nversion: \"2.10\"\nunicode: \"f942\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4.5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n  <path d=\"M3 7l9 6l9 -6\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin",
+      "title": "MAP PIN",
+      "titleCN": "地图图钉",
+      "name": "map-pin",
+      "mainTitle": "地图图钉",
+      "subTitle": "MAP PIN",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03185",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [navigation, location, travel, pin, position, marker, map, attach, fix, mark]\ncategory: Map\nversion: \"1.0\"\nunicode: \"eae8\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-2",
+      "title": "MAP PIN 2",
+      "titleCN": "地图图钉2",
+      "name": "map-pin-2",
+      "mainTitle": "地图图钉2",
+      "subTitle": "MAP PIN 2",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03164",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [locate, landmark, site, fixed, anchor, point, attach, secure, embed, map]\ncategory: Map\nversion: \"2.31\"\nunicode: \"fc48\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7\" />\n  <path d=\"M9 4v13\" />\n  <path d=\"M15 7v5\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-bolt",
+      "title": "MAP PIN Bolt",
+      "titleCN": "地图图钉闪电",
+      "name": "map-pin-bolt",
+      "mainTitle": "地图图钉闪电",
+      "subTitle": "MAP PIN Bolt",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03165",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [energize, spark, charge, thunder, dynamic, lightning, flash, impulse, storm, shock]\nversion: \"2.10\"\nunicode: \"f94a\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M13.414 20.9a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 13.591 -4.629\" />\n  <path d=\"M19 16l-2 3h4l-2 3\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-cancel",
+      "title": "MAP PIN Cancel",
+      "titleCN": "地图图钉Cancel",
+      "name": "map-pin-cancel",
+      "mainTitle": "地图图钉Cancel",
+      "subTitle": "MAP PIN Cancel",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03166",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [retract, nullify, undo, remove, eliminate, dismiss, delete, void, reject, discard]\nversion: \"2.10\"\nunicode: \"f94b\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.463 21.431a1.999 1.999 0 0 1 -1.876 -.531l-4.244 -4.243a8 8 0 1 1 13.594 -4.655\" />\n  <path d=\"M16 19a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\" />\n  <path d=\"M17 21l4 -4\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-check",
+      "title": "MAP PIN Check",
+      "titleCN": "地图图钉勾选",
+      "name": "map-pin-check",
+      "mainTitle": "地图图钉勾选",
+      "subTitle": "MAP PIN Check",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03167",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [approve, validate, confirm, verify, certify, affirm, correct, inspect, authenticate, endorse]\nversion: \"2.10\"\nunicode: \"f94c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M11.87 21.48a1.992 1.992 0 0 1 -1.283 -.58l-4.244 -4.243a8 8 0 1 1 13.355 -3.474\" />\n  <path d=\"M15 19l2 2l4 -4\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-code",
+      "title": "MAP PIN Code",
+      "titleCN": "地图图钉代码",
+      "name": "map-pin-code",
+      "mainTitle": "地图图钉代码",
+      "subTitle": "MAP PIN Code",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03168",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [cipher, cryptic, encrypt, program, key, script, syntax, translate, compute, algorithm]\nversion: \"2.10\"\nunicode: \"f94d\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M11.85 21.48a1.992 1.992 0 0 1 -1.263 -.58l-4.244 -4.243a8 8 0 1 1 13.385 -3.585\" />\n  <path d=\"M20 21l2 -2l-2 -2\" />\n  <path d=\"M17 17l-2 2l2 2\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-cog",
+      "title": "MAP PIN COG",
+      "titleCN": "地图图钉Cog",
+      "name": "map-pin-cog",
+      "mainTitle": "地图图钉Cog",
+      "subTitle": "MAP PIN COG",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03169",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [configure, adjust, gear, apparatus, mechanism, tweak, system, settings, operation, process]\nversion: \"2.10\"\nunicode: \"f94e\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.005 21.485a1.994 1.994 0 0 1 -1.418 -.585l-4.244 -4.243a8 8 0 1 1 13.634 -5.05\" />\n  <path d=\"M17.001 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" />\n  <path d=\"M19.001 15.5v1.5\" />\n  <path d=\"M19.001 21v1.5\" />\n  <path d=\"M22.032 17.25l-1.299 .75\" />\n  <path d=\"M17.27 20l-1.3 .75\" />\n  <path d=\"M15.97 17.25l1.3 .75\" />\n  <path d=\"M20.733 20l1.3 .75\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-dollar",
+      "title": "MAP PIN Dollar",
+      "titleCN": "地图图钉Dollar",
+      "name": "map-pin-dollar",
+      "mainTitle": "地图图钉Dollar",
+      "subTitle": "MAP PIN Dollar",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03170",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [currency, value, payment, wealth, funds, cash, finance, profit, revenue, investment]\nversion: \"2.10\"\nunicode: \"f94f\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M13.02 21.206a2 2 0 0 1 -2.433 -.306l-4.244 -4.243a8 8 0 1 1 13.607 -6.555\" />\n  <path d=\"M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5\" />\n  <path d=\"M19 21v1m0 -8v1\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-down",
+      "title": "MAP PIN Down",
+      "titleCN": "地图图钉Down",
+      "name": "map-pin-down",
+      "mainTitle": "地图图钉Down",
+      "subTitle": "MAP PIN Down",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03171",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [drop, shift, descend, lower, decline, plunge, sink, reduce, fall, decrease]\nversion: \"2.10\"\nunicode: \"f950\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.736 21.345a2 2 0 0 1 -2.149 -.445l-4.244 -4.243a8 8 0 1 1 13.59 -4.624\" />\n  <path d=\"M19 16v6\" />\n  <path d=\"M22 19l-3 3l-3 -3\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-exclamation",
+      "title": "MAP PIN Exclamation",
+      "titleCN": "地图图钉Exclamation",
+      "name": "map-pin-exclamation",
+      "mainTitle": "地图图钉Exclamation",
+      "subTitle": "MAP PIN Exclamation",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03172",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [alert, warning, attention, urgent, notify, caution, emphasis, important, signal, highlight]\nversion: \"2.10\"\nunicode: \"f951\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M15.005 19.31l-1.591 1.59a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 13.592 -4.638\" />\n  <path d=\"M19 16v3\" />\n  <path d=\"M19 22v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-heart",
+      "title": "MAP PIN Heart",
+      "titleCN": "地图图钉爱心",
+      "name": "map-pin-heart",
+      "mainTitle": "地图图钉爱心",
+      "subTitle": "MAP PIN Heart",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03173",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [love, favorite, like, affection, emotion, passion, romantic, adore, cherish, valentine]\nversion: \"2.10\"\nunicode: \"f952\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M15 11a3 3 0 1 0 -3.973 2.839\" />\n  <path d=\"M11.76 21.47a1.991 1.991 0 0 1 -1.173 -.57l-4.244 -4.243a8 8 0 1 1 13.657 -5.588\" />\n  <path d=\"M18 22l3.35 -3.284a2.143 2.143 0 0 0 .005 -3.071a2.242 2.242 0 0 0 -3.129 -.006l-.224 .22l-.223 -.22a2.242 2.242 0 0 0 -3.128 -.006a2.143 2.143 0 0 0 -.006 3.071l3.355 3.296\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-minus",
+      "title": "MAP PIN Minus",
+      "titleCN": "地图图钉Minus",
+      "name": "map-pin-minus",
+      "mainTitle": "地图图钉Minus",
+      "subTitle": "MAP PIN Minus",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03174",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [decrease, subtract, remove, reduce, lessen, detract, shorten, minimize, negate, deduct]\nversion: \"2.10\"\nunicode: \"f953\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.758 21.337a2 2 0 0 1 -2.171 -.437l-4.244 -4.243a8 8 0 1 1 12.585 -1.652\" />\n  <path d=\"M16 19h6\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-off",
+      "title": "MAP PIN OFF",
+      "titleCN": "地图图钉Off",
+      "name": "map-pin-off",
+      "mainTitle": "地图图钉Off",
+      "subTitle": "MAP PIN OFF",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03175",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ntags: [navigation, location, travel, pin, position, marker, map, off, disabled, inactive]\ncategory: Map\nversion: \"1.22\"\nunicode: \"ecf3\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9.442 9.432a3 3 0 0 0 4.113 4.134m1.445 -2.566a3 3 0 0 0 -3 -3\" />\n  <path d=\"M17.152 17.162l-3.738 3.738a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 0 1 -.476 -10.794m2.18 -1.82a8.003 8.003 0 0 1 10.91 10.912\" />\n  <path d=\"M3 3l18 18\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-pause",
+      "title": "MAP PIN Pause",
+      "titleCN": "地图图钉Pause",
+      "name": "map-pin-pause",
+      "mainTitle": "地图图钉Pause",
+      "subTitle": "MAP PIN Pause",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03176",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [halt, stop, break, interrupt, pause, wait, hold, delay, stall, freeze]\nversion: \"2.10\"\nunicode: \"f954\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M13.414 20.9a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 13.337 -3.413\" />\n  <path d=\"M17 17v5\" />\n  <path d=\"M21 17v5\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-pin",
+      "title": "MAP PIN PIN",
+      "titleCN": "地图图钉图钉",
+      "name": "map-pin-pin",
+      "mainTitle": "地图图钉图钉",
+      "subTitle": "MAP PIN PIN",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03177",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [secure, attach, fix, position, locate, mark, anchor, stable, stick, fasten]\nversion: \"2.10\"\nunicode: \"f955\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.783 21.326a2 2 0 0 1 -2.196 -.426l-4.244 -4.243a8 8 0 1 1 13.657 -5.62\" />\n  <path d=\"M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879\" />\n  <path d=\"M19 18v.01\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-plus",
+      "title": "MAP PIN Plus",
+      "titleCN": "地图图钉加号",
+      "name": "map-pin-plus",
+      "mainTitle": "地图图钉加号",
+      "subTitle": "MAP PIN Plus",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03178",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [add, increase, expand, enlarge, grow, boost, enhance, amplify, raise, supplement]\nversion: \"2.10\"\nunicode: \"f956\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M12.794 21.322a2 2 0 0 1 -2.207 -.422l-4.244 -4.243a8 8 0 1 1 13.59 -4.616\" />\n  <path d=\"M16 19h6\" />\n  <path d=\"M19 16v6\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-question",
+      "title": "MAP PIN Question",
+      "titleCN": "地图图钉Question",
+      "name": "map-pin-question",
+      "mainTitle": "地图图钉Question",
+      "subTitle": "MAP PIN Question",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03179",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [inquire, ask, wonder, confuse, puzzle, curious, doubt, query, seek, probability]\nversion: \"2.10\"\nunicode: \"f957\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />\n  <path d=\"M14.997 19.317l-1.583 1.583a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 13.657 -5.584\" />\n  <path d=\"M19 22v.01\" />\n  <path d=\"M19 19a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483\" />\n</svg>\n",
+      "score": 118.0
+    },
+    {
+      "uniqueKey": "tabler-icons:outline:map-pin-search",
+      "title": "MAP PIN Search",
+      "titleCN": "地图图钉搜索",
+      "name": "map-pin-search",
+      "mainTitle": "地图图钉搜索",
+      "subTitle": "MAP PIN Search",
+      "category": "线性 · 地图位置 (Map)",
+      "library": "tabler-icons",
+      "libraryTitle": "Tabler Icons",
+      "sourceId": "03180",
+      "variantText": "线性",
+      "colorHex": "",
+      "svgMarkup": "<!--\ncategory: Map\ntags: [find, locate, seek, explore, scan, look, discover, detect, probe, inspect]\nversion: \"2.10\"\nunicode: \"f958\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M14.916 11.707a3 3 0 1 0 -2.916 2.293\" />\n  <path d=\"M11.991 21.485a1.994 1.994 0 0 1 -1.404 -.585l-4.244 -4.243a8 8 0 1 1 13.651 -5.351\" />\n  <path d=\"M15 18a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\" />\n  <path d=\"M20.2 20.2l1.8 1.8\" />\n</svg>\n",
+      "score": 118.0
+    }
+  ]
+};
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    (function main() {
+      var data = window.__ICON_DATA__ || { items: [], styleDefaults: {} };
+      var items = Array.isArray(data.items) ? data.items : [];
+      var colorSuggestions = Array.isArray(data.colorSuggestions) ? data.colorSuggestions : [];
+      var defaultStyleState = Object.assign({
+        theme: "original",
+        size: 48,
+        color: "#333333",
+        secondaryColor: "#2F88FF",
+        tertiaryColor: "#FFFFFF",
+        quaternaryColor: "#43CCF8",
+        strokeWidth: 4,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        weight: 400,
+        grade: 0,
+        opticalSize: 24,
+        background: "transparent"
+      }, data.styleDefaults || {});
+      var styleState = Object.assign({}, defaultStyleState);
+      var selectedItemIndex = -1;
+      var activeColorSuggestionIndex = -1;
+      var stylePanel = document.querySelector(".style-panel");
+      var palettePanel = document.querySelector(".palette-panel");
+      var paletteList = document.getElementById("paletteList");
+      var resetPaletteButton = document.getElementById("resetPaletteButton");
+      var toggleConfigButton = document.getElementById("toggleConfigButton");
+      var guideBackdrop = document.getElementById("guideBackdrop");
+      var guidePanel = document.getElementById("guidePanel");
+      var showGuideButton = document.getElementById("showGuideButton");
+      var closeGuideButton = document.getElementById("closeGuideButton");
+      var hideHoverPreview = function() {};
+      var toastTimer = 0;
+      var toast = document.createElement("div");
+      toast.className = "toast";
+      document.body.appendChild(toast);
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(function() {
+          toast.classList.remove("show");
+        }, 1600);
+      }
+
+      function fallbackCopy(text) {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "readonly");
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        var ok = false;
+        try {
+          ok = document.execCommand("copy");
+        } finally {
+          document.body.removeChild(textarea);
+        }
+        return ok;
+      }
+
+      function copyText(text, successMessage) {
+        var safeText = String(text == null ? "" : text);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(safeText).then(function() {
+            showToast(successMessage);
+            return true;
+          }).catch(function() {
+            if (fallbackCopy(safeText)) {
+              showToast(successMessage);
+              return true;
+            }
+            showToast("复制失败，请手动复制");
+            return false;
+          });
+        }
+
+        if (fallbackCopy(safeText)) {
+          showToast(successMessage);
+          return Promise.resolve(true);
+        }
+
+        showToast("复制失败，请手动复制");
+        return Promise.resolve(false);
+      }
+
+      function normalizeColor(value, fallbackValue) {
+        var text = String(value == null ? "" : value).trim();
+        if (!text) {
+          return fallbackValue || "";
+        }
+        if (/^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?([0-9a-fA-F]{2})?$/.test(text)) {
+          return ("#" + text).toUpperCase();
+        }
+        if (/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?([0-9a-fA-F]{2})?$/.test(text)) {
+          return text.toUpperCase();
+        }
+        return text;
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function formatNumber(value) {
+        return Number(value).toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$" + "1");
+      }
+
+      function computeStrokeWidth(state) {
+        var base = Number(state.strokeWidth || 4);
+        var computed = base;
+        computed += ((Number(state.weight || 400) - 400) / 300) * 1.6;
+        computed += (Number(state.grade || 0) / 200) * 0.8;
+        computed += ((Number(state.opticalSize || 24) - 24) / 24) * 0.6;
+        return clamp(Math.round(computed * 100) / 100, 0.5, 8);
+      }
+
+      function isGraphicElement(element) {
+        if (!element || !element.localName) {
+          return false;
+        }
+        return ["path", "circle", "ellipse", "rect", "line", "polyline", "polygon", "use"].indexOf(element.localName) >= 0;
+      }
+
+      function canUseFill(element) {
+        return element && ["line", "polyline"].indexOf(element.localName) < 0;
+      }
+
+      function getStylePropertyValue(element, name) {
+        return element && element.style ? String(element.style.getPropertyValue(name) || "").trim() : "";
+      }
+
+      function shouldReplacePaintValue(value) {
+        var text = String(value == null ? "" : value).trim().toLowerCase();
+        if (!text) {
+          return false;
+        }
+        if (["none", "transparent", "inherit", "initial", "unset", "context-fill", "context-stroke"].indexOf(text) >= 0) {
+          return false;
+        }
+        return text.indexOf("url(") !== 0;
+      }
+
+      function getPaintInfo(element) {
+        var fillValue = element.getAttribute("fill") || getStylePropertyValue(element, "fill");
+        var strokeValue = element.getAttribute("stroke") || getStylePropertyValue(element, "stroke");
+        return {
+          hasFillPaint: shouldReplacePaintValue(fillValue),
+          hasStrokePaint: shouldReplacePaintValue(strokeValue)
+        };
+      }
+
+      function setElementValue(element, name, value) {
+        if (!element) {
+          return;
+        }
+        if (value == null || value === "") {
+          element.removeAttribute(name);
+          if (element.style) {
+            element.style.removeProperty(name);
+          }
+          return;
+        }
+        element.setAttribute(name, value);
+        if (element.style) {
+          element.style.setProperty(name, value);
+        }
+      }
+
+      function getMultiColorFill(state, runtimeState) {
+        var palette = [
+          normalizeColor(state.secondaryColor, "#2F88FF"),
+          normalizeColor(state.tertiaryColor, "#FFFFFF"),
+          normalizeColor(state.quaternaryColor, "#43CCF8"),
+          normalizeColor(state.color, "#333333")
+        ];
+        var value = palette[runtimeState.fillIndex % palette.length];
+        runtimeState.fillIndex += 1;
+        return value;
+      }
+
+      function applyStyleToElement(element, state, runtimeState) {
+        if (!isGraphicElement(element)) {
+          return;
+        }
+
+        var theme = state.theme || "original";
+        var paintInfo = getPaintInfo(element);
+        var primaryColor = normalizeColor(state.color, "#333333");
+        var secondaryColor = normalizeColor(state.secondaryColor, "#2F88FF");
+        var strokeWidthText = formatNumber(computeStrokeWidth(state));
+        var canFillNow = canUseFill(element);
+
+        if (theme === "original") {
+          if (primaryColor) {
+            if (paintInfo.hasFillPaint) {
+              setElementValue(element, "fill", primaryColor);
+            }
+            if (paintInfo.hasStrokePaint) {
+              setElementValue(element, "stroke", primaryColor);
+            }
+          }
+          if (paintInfo.hasStrokePaint) {
+            setElementValue(element, "stroke-width", strokeWidthText);
+            setElementValue(element, "stroke-linecap", state.strokeLinecap || "round");
+            setElementValue(element, "stroke-linejoin", state.strokeLinejoin || "round");
+          }
+          return;
+        }
+
+        if (theme === "outline") {
+          if (canFillNow) {
+            setElementValue(element, "fill", "none");
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+        else if (theme === "filled") {
+          if (canFillNow) {
+            setElementValue(element, "fill", primaryColor);
+          }
+          if (paintInfo.hasStrokePaint) {
+            setElementValue(element, "stroke", primaryColor);
+          }
+        }
+        else if (theme === "two-tone") {
+          if (canFillNow && (paintInfo.hasFillPaint || !paintInfo.hasStrokePaint)) {
+            setElementValue(element, "fill", secondaryColor);
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+        else if (theme === "multi-color") {
+          if (canFillNow && (paintInfo.hasFillPaint || !paintInfo.hasStrokePaint)) {
+            setElementValue(element, "fill", getMultiColorFill(state, runtimeState));
+          }
+          setElementValue(element, "stroke", primaryColor);
+        }
+
+        setElementValue(element, "stroke-width", strokeWidthText);
+        setElementValue(element, "stroke-linecap", state.strokeLinecap || "round");
+        setElementValue(element, "stroke-linejoin", state.strokeLinejoin || "round");
+      }
+
+      function transformSvgMarkup(svgMarkup, state) {
+        var markup = String(svgMarkup || "").trim();
+        if (!markup) {
+          return "";
+        }
+
+        var parser = new DOMParser();
+        var documentNode = parser.parseFromString(markup, "image/svg+xml");
+        var svg = documentNode.documentElement;
+        if (!svg || !svg.localName || svg.localName.toLowerCase() !== "svg") {
+          return markup;
+        }
+
+        svg.setAttribute("width", String(state.size));
+        svg.setAttribute("height", String(state.size));
+        svg.style.setProperty("color", normalizeColor(state.color, "#333333"));
+
+        var runtimeState = { fillIndex: 0 };
+        Array.prototype.forEach.call(svg.querySelectorAll("*"), function(node) {
+          applyStyleToElement(node, state, runtimeState);
+        });
+
+        return new XMLSerializer().serializeToString(svg);
+      }
+
+      function renderChip(text, extraClass) {
+        if (!text) {
+          return "";
+        }
+        var className = "meta-chip" + (extraClass ? " " + extraClass : "");
+        return '<div class="' + className + '" title="' + escapeHtml(text) + '">' + escapeHtml(text) + '</div>';
+      }
+
+      function renderColorChip(hexValue) {
+        var color = normalizeColor(hexValue, "");
+        if (!color) {
+          return "";
+        }
+        return [
+          '<div class="meta-chip brand-color" title="品牌色 ' + escapeHtml(color) + '">',
+          '  <span class="color-dot" style="background:' + escapeHtml(color) + ';"></span>',
+          '  <span>' + escapeHtml(color) + '</span>',
+          '</div>'
+        ].join("");
+      }
+
+      function getStylePresetObject() {
+        return {
+          theme: styleState.theme,
+          size: Number(styleState.size),
+          color: normalizeColor(styleState.color, "#333333"),
+          secondaryColor: normalizeColor(styleState.secondaryColor, "#2F88FF"),
+          tertiaryColor: normalizeColor(styleState.tertiaryColor, "#FFFFFF"),
+          quaternaryColor: normalizeColor(styleState.quaternaryColor, "#43CCF8"),
+          strokeWidth: Number(formatNumber(computeStrokeWidth(styleState))),
+          strokeLinecap: styleState.strokeLinecap,
+          strokeLinejoin: styleState.strokeLinejoin,
+          weight: Number(styleState.weight),
+          grade: Number(styleState.grade),
+          opticalSize: Number(styleState.opticalSize),
+          background: styleState.background || "transparent"
+        };
+      }
+
+      function getCopyPayloadObject(item) {
+        var currentItem = item || {};
+        var preset = getStylePresetObject();
+        return {
+          imageName: currentItem.uniqueKey || "",
+          uniqueKey: currentItem.uniqueKey || "",
+          title: currentItem.mainTitle || currentItem.title || "",
+          library: currentItem.library || "",
+          theme: preset.theme,
+          size: preset.size,
+          color: preset.color,
+          secondaryColor: preset.secondaryColor,
+          tertiaryColor: preset.tertiaryColor,
+          quaternaryColor: preset.quaternaryColor,
+          strokeWidth: preset.strokeWidth,
+          strokeLinecap: preset.strokeLinecap,
+          strokeLinejoin: preset.strokeLinejoin,
+          weight: preset.weight,
+          grade: preset.grade,
+          opticalSize: preset.opticalSize,
+          background: preset.background,
+          copySource: "icon-design-search"
+        };
+      }
+
+      function getThemeLabel(theme) {
+        var value = String(theme || "").toLowerCase();
+        if (value === "outline") { return "线性"; }
+        if (value === "filled") { return "填充"; }
+        if (value === "two-tone") { return "双色"; }
+        if (value === "multi-color") { return "多色"; }
+        return "原图";
+      }
+
+      function renderPaletteDot(value) {
+        var color = normalizeColor(value, "");
+        if (!color) {
+          return "";
+        }
+        return [
+          '<span class="palette-dot" style="background:' + escapeHtml(color) + ';"></span>'
+        ].join("");
+      }
+
+      function getColorSuggestionTitle(item) {
+        var parts = [
+          String(item.title || ""),
+          "风格：" + getThemeLabel(item.theme || "original"),
+          String(item.summary || ""),
+          "主色：" + normalizeColor(item.color, "#333333"),
+          "副色：" + normalizeColor(item.secondaryColor, "#2F88FF")
+        ];
+        if (item.tertiaryColor) {
+          parts.push("第三色：" + normalizeColor(item.tertiaryColor, "#FFFFFF"));
+        }
+        return parts.filter(function(text) { return !!text; }).join(" | ");
+      }
+
+      function renderColorSuggestions() {
+        if (!palettePanel || !paletteList) {
+          return;
+        }
+        if (!colorSuggestions.length) {
+          palettePanel.style.display = "none";
+          return;
+        }
+
+        palettePanel.style.display = "";
+        paletteList.innerHTML = colorSuggestions.map(function(item, index) {
+          var activeClass = index === activeColorSuggestionIndex ? " active" : "";
+          var buttonTitle = getColorSuggestionTitle(item);
+          return [
+            '<button type="button" class="palette-button' + activeClass + '" data-palette-apply="' + index + '" title="' + escapeHtml(buttonTitle) + '">',
+            '  <span class="palette-swatches">',
+                 renderPaletteDot(item.color),
+                 renderPaletteDot(item.secondaryColor),
+                 renderPaletteDot(item.tertiaryColor),
+            '  </span>',
+            '  <span class="palette-label">' + escapeHtml(item.title || ("方案 " + (index + 1))) + '</span>',
+            '</button>'
+          ].join("");
+        }).join("");
+      }
+
+      function applyColorSuggestion(index) {
+        var suggestion = colorSuggestions[index];
+        if (!suggestion) {
+          return;
+        }
+        activeColorSuggestionIndex = index;
+        styleState.theme = suggestion.theme || styleState.theme;
+        styleState.color = normalizeColor(suggestion.color, styleState.color || "#333333");
+        styleState.secondaryColor = normalizeColor(suggestion.secondaryColor, styleState.secondaryColor || "#2F88FF");
+        styleState.tertiaryColor = normalizeColor(suggestion.tertiaryColor, styleState.tertiaryColor || "#FFFFFF");
+        styleState.quaternaryColor = normalizeColor(suggestion.quaternaryColor, styleState.quaternaryColor || "#43CCF8");
+        styleState.background = suggestion.background || styleState.background || "transparent";
+        syncControlsFromState();
+        applyPreviewStyles();
+        renderColorSuggestions();
+        setConfigPanelVisible(true);
+        showToast("已应用推荐配色：" + (suggestion.title || ("方案 " + (index + 1))));
+      }
+
+      function setConfigPanelVisible(visible) {
+        stylePanel.classList.toggle("show", !!visible);
+        if (palettePanel && colorSuggestions.length) {
+          palettePanel.classList.toggle("show", !!visible);
+        }
+        toggleConfigButton.classList.toggle("active", !!visible);
+        toggleConfigButton.textContent = visible ? "收起配置" : "显示配置";
+      }
+
+      function setGuidePanelVisible(visible) {
+        hideHoverPreview();
+        guideBackdrop.classList.toggle("show", !!visible);
+        guidePanel.classList.toggle("show", !!visible);
+        showGuideButton.classList.toggle("active", !!visible);
+        document.body.style.overflow = visible ? "hidden" : "";
+      }
+
+      function updateSelectedCard() {
+        Array.prototype.forEach.call(document.querySelectorAll(".card"), function(card) {
+          var index = Number(card.getAttribute("data-card-index"));
+          card.classList.toggle("selected", index === selectedItemIndex);
+        });
+      }
+
+      function renderPage() {
+        document.getElementById("queryText").textContent = data.queryText || "";
+        document.getElementById("resultCount").textContent = String(data.resultCount || 0);
+        document.getElementById("iconList").innerHTML = items.map(function(item, index) {
+          return [
+            '<li class="card" data-card-index="' + index + '">',
+            '  <div class="card-head">',
+            '    <div class="library-band" title="' + escapeHtml((item.libraryTitle || item.library) + " (" + (item.library || "") + ")") + '">',
+            '      <span class="library-name">' + escapeHtml(item.libraryTitle || item.library) + '</span>',
+            '    </div>',
+            '  </div>',
+            '  <div class="icon-box" data-item-index="' + index + '"><div class="icon-svg" data-item-index="' + index + '"></div></div>',
+            '  <div class="key-label">图片名称</div>',
+            '  <button type="button" class="key-value" data-copy-index="' + index + '" title="点击复制这张图的完整参数 JSON">' + escapeHtml(item.uniqueKey) + '</button>',
+            '  <div class="title-row">',
+            '    <div class="main-name" title="' + escapeHtml(item.mainTitle || item.title) + '">' + escapeHtml(item.mainTitle || item.title) + '</div>',
+            '    <div class="sub-name" title="' + escapeHtml(item.subTitle || item.name) + '">' + escapeHtml(item.subTitle || item.name) + '</div>',
+            '  </div>',
+            '  <div class="meta-row">',
+                 renderChip(item.category, ""),
+                 renderChip(item.variantText, "variant"),
+                 renderColorChip(item.colorHex),
+            '  </div>',
+            '</li>'
+          ].join("");
+        }).join("");
+
+        applyPreviewStyles();
+        updateSelectedCard();
+      }
+
+      function applyPreviewStyles() {
+        Array.prototype.forEach.call(document.querySelectorAll(".icon-svg"), function(container) {
+          var index = Number(container.getAttribute("data-item-index"));
+          var item = items[index];
+          if (!item) {
+            container.innerHTML = "";
+            return;
+          }
+          container.innerHTML = transformSvgMarkup(item.svgMarkup || "", styleState);
+        });
+        updateChoiceButtons();
+      }
+
+      function updateChoiceButtons() {
+        Array.prototype.forEach.call(document.querySelectorAll("[data-choice-group]"), function(button) {
+          var group = button.getAttribute("data-choice-group");
+          var value = button.getAttribute("data-choice-value");
+          button.classList.toggle("active", String(styleState[group]) === String(value));
+        });
+      }
+
+      function bindRangeAndNumber(rangeId, numberId, stateKey, parseMode) {
+        var range = document.getElementById(rangeId);
+        var number = document.getElementById(numberId);
+
+        function sync(value) {
+          var nextValue = parseMode === "float" ? parseFloat(value) : parseInt(value, 10);
+          if (!isFinite(nextValue)) {
+            return;
+          }
+          styleState[stateKey] = nextValue;
+          range.value = String(nextValue);
+          number.value = String(nextValue);
+          applyPreviewStyles();
+        }
+
+        range.value = String(styleState[stateKey]);
+        number.value = String(styleState[stateKey]);
+        range.addEventListener("input", function() { sync(range.value); });
+        number.addEventListener("input", function() { sync(number.value); });
+      }
+
+      function bindColorControl(pickerId, textId, stateKey, fallbackValue) {
+        var picker = document.getElementById(pickerId);
+        var text = document.getElementById(textId);
+
+        function sync(value) {
+          var nextValue = normalizeColor(value, fallbackValue);
+          if (!nextValue) {
+            nextValue = fallbackValue;
+          }
+          styleState[stateKey] = nextValue;
+          text.value = nextValue;
+          if (/^#[0-9A-F]{6}$/i.test(nextValue)) {
+            picker.value = nextValue;
+          }
+          applyPreviewStyles();
+        }
+
+        text.value = normalizeColor(styleState[stateKey], fallbackValue);
+        picker.value = /^#[0-9A-F]{6}$/i.test(text.value) ? text.value : fallbackValue;
+        picker.addEventListener("input", function() { sync(picker.value); });
+        text.addEventListener("change", function() { sync(text.value); });
+      }
+
+      function setRangeControlValue(rangeId, numberId, value) {
+        var range = document.getElementById(rangeId);
+        var number = document.getElementById(numberId);
+        if (range) {
+          range.value = String(value);
+        }
+        if (number) {
+          number.value = String(value);
+        }
+      }
+
+      function setColorControlValue(pickerId, textId, value, fallbackValue) {
+        var picker = document.getElementById(pickerId);
+        var text = document.getElementById(textId);
+        var nextValue = normalizeColor(value, fallbackValue);
+        if (!nextValue) {
+          nextValue = fallbackValue;
+        }
+        if (text) {
+          text.value = nextValue;
+        }
+        if (picker) {
+          picker.value = /^#[0-9A-F]{6}$/i.test(nextValue) ? nextValue : fallbackValue;
+        }
+      }
+
+      function syncControlsFromState() {
+        setRangeControlValue("sizeRange", "sizeNumber", styleState.size);
+        setRangeControlValue("strokeWidthRange", "strokeWidthNumber", styleState.strokeWidth);
+        setRangeControlValue("weightRange", "weightNumber", styleState.weight);
+        setRangeControlValue("gradeRange", "gradeNumber", styleState.grade);
+        setRangeControlValue("opticalSizeRange", "opticalSizeNumber", styleState.opticalSize);
+        setColorControlValue("colorPicker", "colorText", styleState.color, "#333333");
+        setColorControlValue("secondaryColorPicker", "secondaryColorText", styleState.secondaryColor, "#2F88FF");
+        setColorControlValue("tertiaryColorPicker", "tertiaryColorText", styleState.tertiaryColor, "#FFFFFF");
+        setColorControlValue("quaternaryColorPicker", "quaternaryColorText", styleState.quaternaryColor, "#43CCF8");
+        updateChoiceButtons();
+      }
+
+      bindRangeAndNumber("sizeRange", "sizeNumber", "size", "int");
+      bindRangeAndNumber("strokeWidthRange", "strokeWidthNumber", "strokeWidth", "float");
+      bindRangeAndNumber("weightRange", "weightNumber", "weight", "int");
+      bindRangeAndNumber("gradeRange", "gradeNumber", "grade", "int");
+      bindRangeAndNumber("opticalSizeRange", "opticalSizeNumber", "opticalSize", "int");
+      bindColorControl("colorPicker", "colorText", "color", "#333333");
+      bindColorControl("secondaryColorPicker", "secondaryColorText", "secondaryColor", "#2F88FF");
+      bindColorControl("tertiaryColorPicker", "tertiaryColorText", "tertiaryColor", "#FFFFFF");
+      bindColorControl("quaternaryColorPicker", "quaternaryColorText", "quaternaryColor", "#43CCF8");
+
+      Array.prototype.forEach.call(document.querySelectorAll("[data-choice-group]"), function(button) {
+        button.addEventListener("click", function() {
+          var group = button.getAttribute("data-choice-group");
+          styleState[group] = button.getAttribute("data-choice-value") || "";
+          applyPreviewStyles();
+        });
+      });
+
+      if (paletteList) {
+        paletteList.addEventListener("click", function(event) {
+          var button = event.target.closest("[data-palette-apply]");
+          if (!button) {
+            return;
+          }
+          applyColorSuggestion(Number(button.getAttribute("data-palette-apply")));
+        });
+      }
+
+      if (resetPaletteButton) {
+        resetPaletteButton.addEventListener("click", function() {
+          activeColorSuggestionIndex = -1;
+          styleState = Object.assign({}, defaultStyleState);
+          syncControlsFromState();
+          applyPreviewStyles();
+          renderColorSuggestions();
+          showToast("已重置为默认配色");
+        });
+      }
+
+      toggleConfigButton.addEventListener("click", function() {
+        setConfigPanelVisible(!stylePanel.classList.contains("show"));
+      });
+
+      showGuideButton.addEventListener("click", function(event) {
+        event.stopPropagation();
+        setGuidePanelVisible(!guidePanel.classList.contains("show"));
+      });
+
+      closeGuideButton.addEventListener("click", function() {
+        setGuidePanelVisible(false);
+      });
+
+      guideBackdrop.addEventListener("click", function() {
+        setGuidePanelVisible(false);
+      });
+
+      document.addEventListener("click", function(event) {
+        if (!guidePanel.contains(event.target) && !showGuideButton.contains(event.target)) {
+          setGuidePanelVisible(false);
+        }
+      });
+
+      document.getElementById("iconList").addEventListener("click", function(event) {
+        var target = event.target.closest(".card");
+        if (!target) {
+          return;
+        }
+        var index = Number(target.getAttribute("data-card-index"));
+        var item = items[index];
+        if (!item) {
+          return;
+        }
+        selectedItemIndex = index;
+        updateSelectedCard();
+        copyText(JSON.stringify(getCopyPayloadObject(item), null, 2), "完整参数 JSON 已复制");
+      });
+
+      setConfigPanelVisible(false);
+      setGuidePanelVisible(false);
+      renderColorSuggestions();
+      renderPage();
+
+      (function enableHoverPreview() {
+        var list = document.getElementById("iconList");
+        var preview = document.createElement("div");
+        var previewBox = document.createElement("div");
+        var previewTitle = document.createElement("div");
+
+        preview.className = "hover-preview";
+        previewBox.className = "hover-preview-box";
+        previewTitle.className = "hover-preview-title";
+        preview.appendChild(previewBox);
+        preview.appendChild(previewTitle);
+        document.body.appendChild(preview);
+
+        function hidePreview() {
+          preview.classList.remove("show");
+          previewBox.innerHTML = "";
+          previewTitle.textContent = "";
+        }
+        hideHoverPreview = hidePreview;
+
+        function updatePreviewPosition(event) {
+          var offset = 18;
+          var left = event.clientX + offset;
+          var top = event.clientY + offset;
+          var width = Math.min(420, window.innerWidth - 24);
+          var height = 360;
+
+          if (left + width > window.innerWidth - 12) {
+            left = event.clientX - width - offset;
+          }
+          if (top + height > window.innerHeight - 12) {
+            top = event.clientY - height - offset;
+          }
+          if (left < 12) {
+            left = 12;
+          }
+          if (top < 12) {
+            top = 12;
+          }
+
+          preview.style.left = left + "px";
+          preview.style.top = top + "px";
+        }
+
+        list.addEventListener("mouseover", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+          if (guidePanel.classList.contains("show")) {
+            return;
+          }
+
+          var card = box.closest(".card");
+          var titleNode = card ? card.querySelector(".main-name") : null;
+          previewBox.innerHTML = box.innerHTML || "";
+          previewTitle.textContent = titleNode ? (titleNode.textContent || "") : "";
+          updatePreviewPosition(event);
+          preview.classList.add("show");
+        });
+
+        list.addEventListener("mousemove", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+          if (guidePanel.classList.contains("show")) {
+            return;
+          }
+          updatePreviewPosition(event);
+        });
+
+        list.addEventListener("mouseout", function(event) {
+          var box = event.target.closest(".icon-box");
+          if (!box || !list.contains(box)) {
+            return;
+          }
+
+          var related = event.relatedTarget;
+          if (related && box.contains(related)) {
+            return;
+          }
+          hidePreview();
+        });
+
+        window.addEventListener("scroll", hidePreview, { passive: true });
+        window.addEventListener("blur", hidePreview);
+      })();
+    })();
+  </script>
+</body>
+</html>

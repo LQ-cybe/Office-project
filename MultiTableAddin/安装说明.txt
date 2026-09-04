@@ -1,0 +1,51 @@
+﻿MultiTableAddin 安装说明
+
+一、推荐分发方式
+
+建议发送整个 `dist` 文件夹，让对方双击：
+
+- `install_excel_addin.bat`
+- `install_wps_addin.bat`
+
+二、目录说明
+
+1. `files`
+   存放实际插件文件与安装脚本，请不要单独拆散。
+
+2. `files\scripts`
+   存放 PowerShell 安装与卸载脚本，`bat` 会自动调用这里的脚本。
+
+3. `files\logs`
+   插件运行日志目录，默认使用 `NLog`，按日期分文件、单文件 5MB 轮转、保留最近 30 天。
+
+4. `files\webview2`
+   `WebView2` 用户数据目录，默认落在插件目录下，便于整体删除和卸载清理。
+
+三、Excel 安装
+
+1. 将整个 `dist` 文件夹移动到固定位置，不要放在临时目录。
+2. 双击运行 `install_excel_addin.bat`。
+3. 当前运行时基线为 `.NET 8`，运行策略为 `LatestPatch`。
+4. 安装完成后脚本会尝试自动打开 Excel。
+5. 确认插件是否成功加载。
+
+四、WPS 安装
+
+1. 将整个 `dist` 文件夹移动到固定位置，不要放在临时目录。
+2. 双击运行 `install_wps_addin.bat`。
+3. 当前运行时基线为 `.NET 8`，运行策略为 `LatestPatch`。
+4. 安装完成后脚本会尝试自动打开 WPS ET。
+5. 确认插件是否成功加载。
+
+五、卸载
+
+1. Excel 卸载：双击 `uninstall_excel_addin.bat`
+2. WPS 卸载：双击 `uninstall_wps_addin.bat`
+3. 卸载脚本会同时清理 `logs` 与 `webview2` 目录。
+
+六、注意事项
+
+1. 如果系统限制直接运行 `.ps1`，请优先双击 `.bat`，不要直接双击 `.ps1`。
+2. 如果目标机器没有任何 `.NET 6+ Desktop Runtime`，当前默认模板生成的版本将无法加载。
+3. 如果不确定对方环境，优先发送完整 `dist` 目录并使用安装方式。
+4. 如果重新构建时提示 `dist\files\*.xll` 被占用，请先关闭正在加载该插件的 Excel/WPS 再重试。

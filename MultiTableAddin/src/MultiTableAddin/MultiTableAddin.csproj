@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RollForward>LatestPatch</RollForward>
+    <RootNamespace>MultiTableAddin</RootNamespace>
+    <AssemblyName>MultiTableAddin</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <ExcelAddInExplicitExports>true</ExcelAddInExplicitExports>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <ExcelDnaRuntimeRoot>$(MSBuildThisFileDirectory)..\..\runtime\exceldna</ExcelDnaRuntimeRoot>
+    <ExcelDnaIntegrationPath>$(ExcelDnaRuntimeRoot)\net6\ExcelDna.Integration.dll</ExcelDnaIntegrationPath>
+    <ExcelDnaIntelliSensePath>$(ExcelDnaRuntimeRoot)\net6\ExcelDna.IntelliSense.dll</ExcelDnaIntelliSensePath>
+    <ExcelDnaXll32Path>$(ExcelDnaRuntimeRoot)\ExcelDna.xll</ExcelDnaXll32Path>
+    <ExcelDnaXll64Path>$(ExcelDnaRuntimeRoot)\ExcelDna64.xll</ExcelDnaXll64Path>
+    <EnableSmokeTestHooks>false</EnableSmokeTestHooks>
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableSmokeTestHooks)'=='true'">
+    <DefineConstants>$(DefineConstants);EXCELDNA_TEST_HOOKS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- v1.9 已将 Registration 能力内置到本地 patched runtime，生成项目不再引用 ExcelDna.Registration NuGet。 -->
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3065.39" />
+    <PackageReference Include="NLog" Version="5.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- v1.9 已将 Registration 能力内置到本地 patched runtime，对外不再引用 ExcelDna.Registration NuGet。 -->
+    <!-- ExcelDNA 运行时统一使用本地 patched 版本，不能回退到 NuGet 的未兼容版本。 -->
+    <Reference Include="ExcelDna.Integration">
+      <HintPath>$(ExcelDnaIntegrationPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- IntelliSense 依赖 ExcelDna.Integration，统一绑定本地 patched 版本。 -->
+    <Reference Include="ExcelDna.IntelliSense">
+      <HintPath>$(ExcelDnaIntelliSensePath)</HintPath>
+      <!-- 保持 CopyLocal，确保 IntelliSense 进入 deps.json 和默认装配解析链。 -->
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Ribbon.xml">
+      <LogicalName>MultiTableAddin.Resources.Ribbon.xml</LogicalName>
+    </EmbeddedResource>
+    <!-- HTML/WebView2 前端 SPA：作为内嵌资源随 DLL 发布，UI 版本与 DLL 锁死 -->
+    <EmbeddedResource Include="Html\index.html">
+      <LogicalName>MultiTableAddin.Html.index</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\RibbonActivity.png">
+      <LogicalName>MultiTableAddin.Resources.RibbonActivity.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\RibbonOrder.png">
+      <LogicalName>MultiTableAddin.Resources.RibbonOrder.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Icons\RibbonOpen.png">
+      <LogicalName>MultiTableAddin.Resources.RibbonOpen.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Icons\RibbonAbout.png">
+      <LogicalName>MultiTableAddin.Resources.RibbonAbout.png</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Icons\AppIcon.ico">
+      <LogicalName>MultiTableAddin.Resources.AppIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <None Update="MultiTableAddin-AddIn.dna">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MultiTableAddin-AddIn64.dna">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Properties\DesignTimeResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+  </ItemGroup>
+
+  <Target Name="CopyExcelDnaRuntimeArtifacts" AfterTargets="Build">
+    <Error Condition="!Exists('$(ExcelDnaIntegrationPath)')" Text="未找到本地 patched runtime：ExcelDna.Integration.dll，请先同步 runtime\\exceldna\\net6。" />
+    <Error Condition="!Exists('$(ExcelDnaIntelliSensePath)')" Text="未找到本地 patched runtime：ExcelDna.IntelliSense.dll，请先同步 runtime\\exceldna\\net6。" />
+    <Error Condition="!Exists('$(ExcelDnaXll32Path)')" Text="未找到本地 patched runtime：ExcelDna.xll，请先同步 runtime\\exceldna。" />
+    <Error Condition="!Exists('$(ExcelDnaXll64Path)')" Text="未找到本地 patched runtime：ExcelDna64.xll，请先同步 runtime\\exceldna。" />
+    <!-- 构建输出强制覆盖为本地 patched runtime，避免 NuGet 版本混入。 -->
+    <Copy SourceFiles="$(ExcelDnaIntegrationPath)" DestinationFiles="$(TargetDir)ExcelDna.Integration.dll" />
+    <Copy SourceFiles="$(ExcelDnaIntelliSensePath)" DestinationFiles="$(TargetDir)ExcelDna.IntelliSense.dll" />
+    <Copy SourceFiles="$(ExcelDnaXll32Path)" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn.xll" />
+    <Copy SourceFiles="$(ExcelDnaXll64Path)" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn64.xll" />
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).deps.json" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn.deps.json" Condition="Exists('$(TargetDir)$(AssemblyName).deps.json')" />
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).deps.json" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn64.deps.json" Condition="Exists('$(TargetDir)$(AssemblyName).deps.json')" />
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).runtimeconfig.json" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn.runtimeconfig.json" Condition="Exists('$(TargetDir)$(AssemblyName).runtimeconfig.json')" />
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).runtimeconfig.json" DestinationFiles="$(TargetDir)MultiTableAddin-AddIn64.runtimeconfig.json" Condition="Exists('$(TargetDir)$(AssemblyName).runtimeconfig.json')" />
+  </Target>
+</Project>

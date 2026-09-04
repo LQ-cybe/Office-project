@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "requestCount": 1,
+  "foundCount": 1,
+  "missingCount": 0,
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:pin",
+      "library": "tabler-icons",
+      "sourceId": "03839",
+      "category": "Map",
+      "categoryCN": "地图位置",
+      "categoryDisplay": "线性 · 地图位置 (Map)",
+      "name": "pin",
+      "title": "PIN",
+      "svgFileName": "pin.svg",
+      "svg": "<!--\ntags: [thing, localization, maps, clip, place, location, pin, navigation, attach, fix]\ncategory: Map\nversion: \"1.16\"\nunicode: \"ec9c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4\" />\n  <path d=\"M9 15l-4.5 4.5\" />\n  <path d=\"M14.5 4l5.5 5.5\" />\n</svg>\n",
+      "originalSvg": "<!--\ntags: [thing, localization, maps, clip, place, location, pin, navigation, attach, fix]\ncategory: Map\nversion: \"1.16\"\nunicode: \"ec9c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4\" />\n  <path d=\"M9 15l-4.5 4.5\" />\n  <path d=\"M14.5 4l5.5 5.5\" />\n</svg>\n",
+      "styleApplied": false,
+      "resolvedCatalog": "tabler-icons",
+      "resolvedStylePreset": null
+    }
+  ],
+  "missing": [],
+  "stylePreset": null,
+  "note": "svg 字段返回原始 SVG。若传入 -StylePreset，则 svg 字段返回应用样式后的 SVG。"
+}

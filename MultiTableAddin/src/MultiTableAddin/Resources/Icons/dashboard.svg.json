@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "requestCount": 1,
+  "foundCount": 1,
+  "missingCount": 0,
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:layout-dashboard",
+      "library": "tabler-icons",
+      "sourceId": "02917",
+      "category": "Design",
+      "categoryCN": "设计",
+      "categoryDisplay": "线性 · 设计 (Design)",
+      "name": "layout-dashboard",
+      "title": "Layout Dashboard",
+      "svgFileName": "layout-dashboard.svg",
+      "svg": "<!--\ntags: [grid, view, display, page, masonry, layout, dashboard, creative, artistic, visual]\ncategory: Design\nversion: \"1.55\"\nunicode: \"f02c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1\" />\n  <path d=\"M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1\" />\n  <path d=\"M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1\" />\n  <path d=\"M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1\" />\n</svg>\n",
+      "originalSvg": "<!--\ntags: [grid, view, display, page, masonry, layout, dashboard, creative, artistic, visual]\ncategory: Design\nversion: \"1.55\"\nunicode: \"f02c\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1\" />\n  <path d=\"M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1\" />\n  <path d=\"M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1\" />\n  <path d=\"M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1\" />\n</svg>\n",
+      "styleApplied": false,
+      "resolvedCatalog": "tabler-icons",
+      "resolvedStylePreset": null
+    }
+  ],
+  "missing": [],
+  "stylePreset": null,
+  "note": "svg 字段返回原始 SVG。若传入 -StylePreset，则 svg 字段返回应用样式后的 SVG。"
+}

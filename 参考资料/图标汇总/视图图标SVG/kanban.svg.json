@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "requestCount": 1,
+  "foundCount": 1,
+  "missingCount": 0,
+  "items": [
+    {
+      "uniqueKey": "tabler-icons:outline:layout-kanban",
+      "library": "tabler-icons",
+      "sourceId": "02923",
+      "category": "Design",
+      "categoryCN": "设计",
+      "categoryDisplay": "线性 · 设计 (Design)",
+      "name": "layout-kanban",
+      "title": "Layout Kanban",
+      "svgFileName": "layout-kanban.svg",
+      "svg": "<!--\ntags: [position, design, board, processing, task, layout, kanban, creative, artistic, visual]\ncategory: Design\nversion: \"1.11\"\nunicode: \"ec3f\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 4l6 0\" />\n  <path d=\"M14 4l6 0\" />\n  <path d=\"M4 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -8\" />\n  <path d=\"M14 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -2\" />\n</svg>\n",
+      "originalSvg": "<!--\ntags: [position, design, board, processing, task, layout, kanban, creative, artistic, visual]\ncategory: Design\nversion: \"1.11\"\nunicode: \"ec3f\"\n-->\n<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M4 4l6 0\" />\n  <path d=\"M14 4l6 0\" />\n  <path d=\"M4 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -8\" />\n  <path d=\"M14 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -2\" />\n</svg>\n",
+      "styleApplied": false,
+      "resolvedCatalog": "tabler-icons",
+      "resolvedStylePreset": null
+    }
+  ],
+  "missing": [],
+  "stylePreset": null,
+  "note": "svg 字段返回原始 SVG。若传入 -StylePreset，则 svg 字段返回应用样式后的 SVG。"
+}

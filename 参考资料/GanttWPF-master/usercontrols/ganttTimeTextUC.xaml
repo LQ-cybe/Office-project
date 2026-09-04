@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="SCADAServis.Controls.ganttTimeTextUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   >
+    <Border BorderBrush="Silver" BorderThickness="1" >
+        <Border.Background>
+            <SolidColorBrush Opacity=".7" Color="White"></SolidColorBrush>
+       </Border.Background>
+        <TextBlock Margin="2,1" x:Name="lCaption">08h:22:11.8</TextBlock>
+    </Border>
+</UserControl>

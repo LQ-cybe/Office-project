@@ -1,0 +1,64 @@
+<Window x:Class="MultiTableAddin.Views.ChartConfigDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:charts="clr-namespace:MultiTableAddin.Views.Charts"
+        Title="图表设置" Width="820" Height="540"
+        MinWidth="640" MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{DynamicResource RegionBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="12,12,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="272" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 实时预览 -->
+            <Border Grid.Column="0" CornerRadius="6" Padding="10"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" x:Name="PreviewTitle" Text="预览"
+                               FontSize="13" FontWeight="Bold" Margin="0,0,0,8"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock DockPanel.Dock="Bottom" x:Name="PreviewMessage" Text=""
+                               FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource WarningBrush}" />
+                    <charts:SimpleChart x:Name="Preview" />
+                </DockPanel>
+            </Border>
+
+            <!-- 配置面板 -->
+            <Border Grid.Column="2" CornerRadius="6" Padding="12"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="图表配置"
+                               FontSize="13" FontWeight="Bold" Margin="0,0,0,10"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <ContentControl x:Name="EditorHost" />
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <!-- 底部按钮：确定在左、取消在右 -->
+        <Border Grid.Row="1" Padding="12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnOk" Content="确定" Width="88" Margin="0,0,10,0"
+                        Style="{StaticResource ButtonPrimary}"
+                        hc:BorderElement.CornerRadius="4" Click="OnOkClick" />
+                <Button x:Name="BtnCancel" Content="取消" Width="88"
+                        Style="{StaticResource ButtonDefault}"
+                        hc:BorderElement.CornerRadius="4" Click="OnCancelClick" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

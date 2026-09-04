@@ -1,0 +1,503 @@
+{
+  "Version": "2.0",
+  "GeneratedBy": "MultiTableAddin 2.9.42",
+  "SourceFile": "多维表通用测试数据.xlsx",
+  "LastTableName": "表1",
+  "Tables": {
+    "表1": {
+      "Version": "2.0",
+      "GeneratedBy": "MultiTableAddin 2.9.42",
+      "SourceFile": "多维表通用测试数据.xlsx",
+      "SourceSheet": "Sheet1",
+      "TableName": "表1",
+      "Fields": [
+        {
+          "Name": "编号",
+          "Type": "Text",
+          "Options": [],
+          "NumberFormat": "General",
+          "ColumnIndex": 1
+        },
+        {
+          "Name": "姓名",
+          "Type": "Text",
+          "Options": [],
+          "NumberFormat": "General",
+          "ColumnIndex": 2
+        },
+        {
+          "Name": "部门",
+          "Type": "Select",
+          "Options": [
+            "工程部",
+            "包装部",
+            "生产部",
+            "销售部",
+            "技术部",
+            "财务部",
+            "采购部",
+            "行政部",
+            "品质部"
+          ],
+          "NumberFormat": "General",
+          "ColumnIndex": 3
+        },
+        {
+          "Name": "销售额",
+          "Type": "Currency",
+          "Options": [],
+          "NumberFormat": "$#,##0.00\"万\";$-#,##0.00",
+          "ColumnIndex": 4
+        },
+        {
+          "Name": "工龄",
+          "Type": "Integer",
+          "Options": [],
+          "NumberFormat": "0\"年\"",
+          "ColumnIndex": 5
+        },
+        {
+          "Name": "户籍地区",
+          "Type": "Text",
+          "Options": [],
+          "NumberFormat": "General",
+          "ColumnIndex": 6
+        },
+        {
+          "Name": "性别",
+          "Type": "Select",
+          "Options": [
+            "男",
+            "女"
+          ],
+          "NumberFormat": "General",
+          "ColumnIndex": 7
+        },
+        {
+          "Name": "手机号码",
+          "Type": "Phone",
+          "Options": [],
+          "NumberFormat": "General",
+          "ColumnIndex": 8
+        },
+        {
+          "Name": "学历",
+          "Type": "Select",
+          "Options": [
+            "本科",
+            "硕士",
+            "博士",
+            "专科",
+            "其他"
+          ],
+          "NumberFormat": "General",
+          "ColumnIndex": 9
+        },
+        {
+          "Name": "职级",
+          "Type": "Select",
+          "Options": [
+            "P7",
+            "P6",
+            "M3",
+            "P5",
+            "M4",
+            "P4",
+            "M5"
+          ],
+          "NumberFormat": "General",
+          "ColumnIndex": 10
+        },
+        {
+          "Name": "岗位序列",
+          "Type": "Select",
+          "Options": [
+            "研发",
+            "产品",
+            "销售",
+            "运营",
+            "职能"
+          ],
+          "NumberFormat": "General",
+          "ColumnIndex": 11
+        },
+        {
+          "Name": "直属上级",
+          "Type": "Text",
+          "Options": [],
+          "NumberFormat": "General",
+          "ColumnIndex": 12
+        },
+        {
+          "Name": "计划日期",
+          "Type": "Date",
+          "Options": [],
+          "NumberFormat": "m/d/yyyy",
+          "ColumnIndex": 13
+        },
+        {
+          "Name": "开始日期",
+          "Type": "Date",
+          "Options": [],
+          "NumberFormat": "m/d/yyyy",
+          "ColumnIndex": 14
+        }
+      ],
+      "FieldOverrides": [],
+      "NumericLinks": [],
+      "Views": [
+        {
+          "ViewId": "table_5c49b0a3",
+          "ViewType": "Table",
+          "ViewName": "表格视图",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "TableConfig": {
+            "ShowRowNumber": true,
+            "MinColumnWidth": 70,
+            "MaxColumnWidth": 260,
+            "WidthSampleRows": 200
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "form_943c25ca",
+          "ViewType": "Form",
+          "ViewName": "表单视图",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "gallery_d60e5fcf",
+          "ViewType": "Gallery",
+          "ViewName": "画册视图",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [
+            {
+              "Field": "姓名",
+              "Order": "desc"
+            }
+          ],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "CardMeta": {
+            "Title": "姓名",
+            "Image": "",
+            "Description": [],
+            "ColorField": "",
+            "ImageFolder": "D:\\编程开发\\开源项目\\多维表分析软件\\测试数据\\测试图片",
+            "ImageMatchField": "编号",
+            "ImageShape": "circle"
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "calendar_250f3018",
+          "ViewType": "Calendar",
+          "ViewName": "日历视图",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "CalendarConfig": {
+            "DateField": "开始日期",
+            "EndDateField": "",
+            "TitleField": "编号",
+            "ColorField": "",
+            "SnapMinutes": 15
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "dashboard_aa9a092a",
+          "ViewType": "Dashboard",
+          "ViewName": "仪表盘",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "DashboardConfig": {
+            "StatCards": [
+              {
+                "Id": "kpi_cbeb8954",
+                "Title": "记录总数",
+                "Field": "编号",
+                "Aggregation": "Count",
+                "Filter": "",
+                "Format": "int",
+                "Color": "#4E7CF6"
+              },
+              {
+                "Id": "kpi_03b2b951",
+                "Title": "销售额合计",
+                "Field": "销售额",
+                "Aggregation": "Sum",
+                "Filter": "",
+                "Format": "money",
+                "Color": "#F2994A"
+              },
+              {
+                "Id": "kpi_ac547672",
+                "Title": "销售额均值",
+                "Field": "销售额",
+                "Aggregation": "Average",
+                "Filter": "",
+                "Format": "money",
+                "Color": "#27AE60"
+              },
+              {
+                "Id": "kpi_654f6cd6",
+                "Title": "工龄合计",
+                "Field": "工龄",
+                "Aggregation": "Sum",
+                "Filter": "",
+                "Format": "int",
+                "Color": "#9B51E0"
+              }
+            ],
+            "Charts": [
+              {
+                "Id": "chart_f2d028f1",
+                "Title": "编号 · 销售额合计",
+                "Type": "Column",
+                "DimensionField": "编号",
+                "MetricField": "销售额",
+                "Aggregation": "Sum",
+                "TimeField": "",
+                "TimeGroup": "None",
+                "SeriesField": "",
+                "TopN": 12,
+                "GaugeTarget": 100,
+                "ColumnSpan": 1,
+                "Height": 260,
+                "MinLabelValue": 0
+              },
+              {
+                "Id": "chart_9d848f64",
+                "Title": "趋势 · 按月",
+                "Type": "Line",
+                "DimensionField": "",
+                "MetricField": "销售额",
+                "Aggregation": "Sum",
+                "TimeField": "",
+                "TimeGroup": "None",
+                "SeriesField": "",
+                "TopN": 12,
+                "GaugeTarget": 100,
+                "ColumnSpan": 1,
+                "Height": 260,
+                "MinLabelValue": 0
+              },
+              {
+                "Id": "chart_b18aa143",
+                "Title": "季度对比",
+                "Type": "Column",
+                "DimensionField": "",
+                "MetricField": "销售额",
+                "Aggregation": "Sum",
+                "TimeField": "",
+                "TimeGroup": "None",
+                "SeriesField": "",
+                "TopN": 12,
+                "GaugeTarget": 100,
+                "ColumnSpan": 1,
+                "Height": 260,
+                "MinLabelValue": 0
+              },
+              {
+                "Id": "chart_4b70aed4",
+                "Title": "姓名占比",
+                "Type": "Doughnut",
+                "DimensionField": "姓名",
+                "MetricField": "销售额",
+                "Aggregation": "Sum",
+                "TimeField": "",
+                "TimeGroup": "None",
+                "SeriesField": "",
+                "TopN": 8,
+                "GaugeTarget": 100,
+                "ColumnSpan": 1,
+                "Height": 260,
+                "MinLabelValue": 0
+              }
+            ],
+            "Columns": 2
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "chart_cf63d5ac",
+          "ViewType": "Chart",
+          "ViewName": "统计图表",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "编号",
+            "姓名",
+            "部门",
+            "销售额",
+            "工龄",
+            "户籍地区",
+            "性别",
+            "手机号码",
+            "学历",
+            "职级",
+            "岗位序列",
+            "直属上级",
+            "计划日期",
+            "开始日期"
+          ],
+          "ChartConfig": {
+            "Id": "chart_e970b94f",
+            "Title": "季度统计",
+            "Type": "Column",
+            "DimensionField": "",
+            "MetricField": "销售额",
+            "Aggregation": "Sum",
+            "TimeField": "",
+            "TimeGroup": "None",
+            "SeriesField": "",
+            "TopN": 12,
+            "GaugeTarget": 100,
+            "ColumnSpan": 1,
+            "Height": 420,
+            "MinLabelValue": 0
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        },
+        {
+          "ViewId": "view_7e1acec0",
+          "ViewType": "Gantt",
+          "ViewName": "甘特视图",
+          "Filter": "",
+          "GroupBy": "",
+          "Sort": [],
+          "VisibleFields": [
+            "部门",
+            "姓名"
+          ],
+          "GanttConfig": {
+            "StartField": "计划日期",
+            "EndField": "计划日期",
+            "LabelField": "编号",
+            "GroupField": "部门",
+            "ProgressField": "",
+            "ColorField": "",
+            "TimeDimension": "Day",
+            "DisplayFields": [
+              "编号",
+              "姓名",
+              "部门"
+            ]
+          },
+          "Summary": {},
+          "ShowSummary": false,
+          "SummaryPosition": "DataEnd",
+          "UserView": false
+        }
+      ]
+    }
+  },
+  "Order": [
+    "表1"
+  ]
+}

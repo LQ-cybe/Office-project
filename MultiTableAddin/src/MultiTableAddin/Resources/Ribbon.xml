@@ -1,0 +1,11 @@
+﻿<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="OnLoad">
+  <ribbon>
+    <tabs>
+      <tab id="tabMultiTableAddin" label="多维表">
+      <group id="groupMultiTable" label="多维表分析">
+        <button id="btnOpenMultiTable" label="多维视图" size="large" tag="RibbonOpen" getImage="GetButtonImage" onAction="OnOpenMultiTable" />
+      </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
